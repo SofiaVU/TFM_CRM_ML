@@ -136,7 +136,17 @@ getCustomers = async (req, res) => {
                 .json({ success: false, error: `Transactions not found` })
         }
         customers = _.countBy(transactions, function(transactions) { return [transactions.CustomerID, transactions.Country ]; });
+        //customers = _.groupBy(transactions, function(transactions) { return transactions.CustomerID; });
+        //customers2 = _.groupBy(customers, function(customers) { return customers.InvoiceNo; });
+        // return { 'CustomerID': transactions.CustomerID, 'Country': transactions.Country }
 
+        // formatear 
+        output={
+            'CustomerID': customers.data,
+            'Country': customers.data
+        }
+
+        //return res.status(200).json({ success: true, data: customers })
         return res.status(200).json({ success: true, data: customers })
     }).catch(err => console.log(err))
 

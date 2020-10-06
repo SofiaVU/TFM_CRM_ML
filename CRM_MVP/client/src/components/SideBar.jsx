@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 
 // STYLE: BOOTSTRAP & CSS
-import { GoGraph,GoListUnordered,GoTag,GoPerson,GoOrganization } from "react-icons/go";
+import { GoGraph,GoListUnordered,GoTag,GoPerson,GoOrganization, GoDiffAdded } from "react-icons/go";
+import { GrTransaction } from "react-icons/gr";
 import { IconContext } from "react-icons";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -107,7 +108,7 @@ class SideBar extends Component {
 	                  <NavIcon>
 	                    <IconContext.Provider value={{size:"2em"}}>
 	                     	<Link to="/transactions/create">
-	                      		<GoPerson />
+	                      		<GoDiffAdded />
 	                      	</Link>
 	                    </IconContext.Provider>
 	                  </NavIcon>
