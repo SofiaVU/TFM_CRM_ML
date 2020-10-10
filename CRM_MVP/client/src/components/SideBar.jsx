@@ -14,7 +14,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 import {Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
-import { TransactionsList, TransactionsInsert, TransactionsUpdate, Dashboard, CustomerList } from '../pages'
+import { TransactionsList, TransactionsInsert, TransactionsUpdate, Dashboard, CustomerList, TransactionsList_2 } from '../pages'
 
 
 class SideBar extends Component {
@@ -104,6 +104,21 @@ class SideBar extends Component {
 	                  </NavText>
 	                </NavItem>
 
+	                <NavItem eventKey="transactions/list2">
+	                  <NavIcon>
+	                    <IconContext.Provider value={{size:"2em"}}>
+	                     	<Link to="/transactions/list2">
+	                      		<GoListUnordered />
+	                      	</Link>
+	                    </IconContext.Provider>
+	                  </NavIcon>
+	                  <NavText>
+	                    <Link to="/transactions/list">
+	                    	Orders
+	                    </Link>
+	                  </NavText>
+	                </NavItem>
+
 	                <NavItem eventKey="transactions/create">
 	                  <NavIcon>
 	                    <IconContext.Provider value={{size:"2em"}}>
@@ -125,7 +140,8 @@ class SideBar extends Component {
 		            <Switch>
 		                <Route path="/dashboard" exact component={Dashboard} />
 		                <Route path="/customers/list" exact component={CustomerList} />
-		                <Route path="/transactions/list" exact component={TransactionsList} />
+		                <Route path="/transactions/list" exact component={TransactionsList} />		                
+		                <Route path="/transactions/list2" exact component={TransactionsList_2} />
 		                <Route path="/transactions/create" exact component={TransactionsInsert} />
 		                <Route
 		                    path="/transactions/update/:id"

@@ -10,6 +10,7 @@ router.delete('/transaction/:id', TransactionCtrl.deleteTransaction)
 router.get('/transaction/:id', TransactionCtrl.getTransactionById)
 router.get('/transactions', TransactionCtrl.getTransactions)
 router.get('/customers', TransactionCtrl.getCustomers)
+router.get('/orders', TransactionCtrl.getOrders)
 
 
 module.exports = router
