@@ -5,6 +5,18 @@ const Transaction = require('../models/transaction-model')
 var _ = require('underscore-node')
 var _2 = require('lodash')
 
+
+/********** AUX FUNCTIONS *******************/
+
+function convert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
+
+/*********************************************/
+
 createTransaction = (req, res) => {
     const body = req.body
 
@@ -141,43 +153,21 @@ getOrders = async (req, res) => {
         //prueba = sumBy(transactions, ({UnitPrice}) => UnitPrice)
         sum = _.reduce(transactions.UnitPrice, function(memo, num){ return memo + num; }, 0);
 
-        const ans = _2(transactions)
-          .groupBy('CustomerID')
+        const ans =  _2(transactions)
+          .groupBy('InvoiceNo')
           .map((transaction, id) => ({
-            transactionId: id,
-            revenue: _2.sumBy(transaction, 'UnitPrice'),
-            //numOfPeople: _.sumBy(platform, 'numOfPeople')
+            OrderId: id, // InvoiceNo
+            CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+            Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
+            //Date: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0],
+            Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
+            TotalItems: _2.sumBy(transaction, 'Quantity' ),
+            //Revenue: _2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ),
+            Revenue: Math.round((_2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ) + Number.EPSILON) * 100) / 100
           }))
           .value()
 
-        prueba = _.groupBy(transactions, function(transactions) { return [transactions.InvoiceNo, transactions.CustomerID, transactions.Description ,(transactions.UnitPrice*transactions.Quantity)]; });
-
-        /*
-        prueba_2 =Object.keys(prueba)
-        output = {}
-        for (i=0; i<Object.keys(prueba).length; i++){
-            x ={
-                'InvoiceNo': Object.keys(prueba)[i].split(',')[0],
-                'CustomerID': Object.keys(prueba)[i].split(',')[1],
-                'Description': Object.keys(prueba)[i].split(',')[2],
-                'txRevenue': Object.keys(prueba)[i].split(',')[3]
-            }
-        }
-        */
-
-        const ans_2 = _2(transactions)
-          .groupBy('CustomerID')
-          .map((transaction, id) => ({
-            transactionId: id,
-            //revenue: _2.sumBy(transaction, function (x) { return _2.multiply('UnitPrice', 'Quantity')}),
-            revenue: _2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ),
-            //numOfPeople: _.sumBy(platform, 'numOfPeople')
-          }))
-          .value()
-
-        orders = _.groupBy(transactions, function(transactions) { return [transactions.InvoiceNo, transactions.CustomerID, (transactions.UnitPrice*transactions.Quantity)]; });
-
-        return res.status(200).json({ success: true, data: ans_2 })
+        return res.status(200).json({ success: true, data: ans })
     }).catch(err => console.log(err))
 }
 

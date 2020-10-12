@@ -23,7 +23,7 @@ const Delete = styled.div`
 /*******************************
          CLASS UPDATE 
 ********************************/
-class UpdateTransaction extends Component {
+/*class UpdateTransaction extends Component {
     updateUser = event => {
         event.preventDefault()
 
@@ -33,11 +33,11 @@ class UpdateTransaction extends Component {
     render() {
         return <Update onClick={this.updateUser}>Update</Update>
     }
-}
+}*/
 /*******************************
          CLASS DELETE 
 ********************************/
-class DeleteTransaction extends Component {
+/*class DeleteTransaction extends Component {
     deleteUser = event => {
         event.preventDefault()
 
@@ -54,16 +54,16 @@ class DeleteTransaction extends Component {
     render() {
         return <Delete onClick={this.deleteUser}>Delete</Delete>
     }
-}
+}*/
 /*******************************
          CLASS LIST 
 ********************************/
 
-class TransactionsList_2 extends Component {
+class OrdersList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            transactions: [],
+            orders: [],
             columns: [],
             isLoading: false,
         }
@@ -72,58 +72,28 @@ class TransactionsList_2 extends Component {
     componentDidMount = async () => {
         this.setState({ isLoading: true })
 
-        await api.getAllTransactions().then(transactions => {
+        await api.getAllOrders().then(orders => {
             this.setState({
-                transactions: transactions.data.data,
+                orders: orders.data.data,
                 isLoading: false,
             })
         })
     }
 
     render() {
-        const { transactions, isLoading } = this.state
-        console.log('TCL: TransactionsList -> render -> transactions', transactions)
+        const { orders, isLoading } = this.state
+        console.log('TCL: OrderList -> render -> orders', orders)
 
         const columns = [
+
             {
-                Header: 'ID',
-                accessor: '_id',
+                Header: 'Order ID',
+                accessor: 'OrderId',
                 filterable: true,
             },
             {
-                Header: 'InvoiceNo',
-                accessor: 'InvoiceNo',
-                filterable: true,
-            },
-            {
-                Header: 'StockCode',
-                accessor: 'StockCode',
-                filterable: true,
-            },
-            {
-                Header: 'Description',
-                accessor: 'Description',
-                filterable: true,
-                style: { 'whiteSpace': 'unset' } 
-            },
-            {
-                Header: 'Quantity',
-                accessor: 'Quantity',
-                filterable: true,
-            },
-            {
-                Header: 'InvoiceDate',
-                accessor: 'InvoiceDate',
-                filterable: true,
-            },
-            {
-                Header: 'UnitPrice',
-                accessor: 'UnitPrice',
-                filterable: true,
-            },
-            {
-                Header: 'CustomerID',
-                accessor: 'CustomerID',
+                Header: 'Customer ID',
+                accessor: 'CustomerId',
                 filterable: true,
             },
             {
@@ -131,35 +101,26 @@ class TransactionsList_2 extends Component {
                 accessor: 'Country',
                 filterable: true,
                 style: { 'whiteSpace': 'unset' } 
-
             },
             {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <DeleteTransaction id={props.original._id} />
-                        </span>
-                    )
-                },
+                Header: 'Date',
+                accessor: 'Date',
+                filterable: true,
             },
             {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <UpdateTransaction id={props.original._id} />
-                        </span>
-                    )
-                },
+                Header: 'Total Items',
+                accessor: 'TotalItems',
+                filterable: true,
             },
-            
+            {
+                Header: 'Revenue',
+                accessor: 'Revenue',
+                filterable: true,
+            },            
         ]
 
         let showTable = true
-        if (!transactions.length) {
+        if (!orders.length) {
             showTable = false
         }
 
@@ -167,12 +128,13 @@ class TransactionsList_2 extends Component {
             <Wrapper>
                 {showTable && (
                     <ReactTable
-                        data={transactions}
+                        data={orders}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={20}
                         showPageSizeOptions={true}
                         minRows={0}
+                        style={{textAlign: "center" }}
                     />
                 )}
             </Wrapper>
@@ -180,4 +142,4 @@ class TransactionsList_2 extends Component {
     }
 }
 
-export default TransactionsList_2
+export default OrdersList
