@@ -11,6 +11,9 @@ const Transaction = new Schema(
 	    UnitPrice:   { type: Number, required: true  },
 	    CustomerID:  { type: Number, required: true  },
 	    Country:     { type: String, required: false },
+	    Name:    	 { type: String, required: false },
+	    FirstName:   { type: String, required: false },
+	    LastName:    { type: String, required: false }
     },
     { timestamps: true },
 )
