@@ -215,6 +215,60 @@ getProducts = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+/**********************    MY DATASET        **************************/
+getMyDataset = async (req, res) => {
+    await Transaction.find({}, (err, transactions) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!transactions.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transactions not found` })
+        }
+        
+        prueba = _.groupBy(
+            transactions, function(transactions) { 
+                return [transactions.InvoiceNo, transactions.CustomerID, transactions.Country] ; 
+            }
+        );
+
+        const prueba2 =  _2(transactions)
+            .groupBy('InvoiceNo')
+            /*.map((transaction, id)=> ({
+                CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+
+            }))*/
+        ; 
+
+        const prueba3 =  _2(transactions)
+            .groupBy('InvoiceNo')
+            .map((transaction, id)=> ({
+                InvoiceNo: id, 
+                //CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
+                Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
+                Products: Object.values(
+                    _2.groupBy(transaction, function(transaction) { 
+                        return [
+                            transaction.CustomerID, 
+                            transaction.InvoiceNo, 
+                            transaction.InvoiceDate, 
+                            transaction.Country
+                        ]; 
+                    })).map((product, id)=> ({
+                        StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; }))[0] ,
+                        Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; }))[0] ,
+                        Quantity: Object.keys(_2.groupBy(product, function(product) { return product.Quantity; }))[0] ,
+                    }))
+            }))
+        ; 
+
+        return res.status(200).json({ success: true, data: prueba3 })
+    }).catch(err => console.log(err))
+}
+
 
 
 
@@ -226,5 +280,6 @@ module.exports = {
     getTransactionById,
     getCustomers,
     getOrders,
-    getProducts
+    getProducts,
+    getMyDataset
 }

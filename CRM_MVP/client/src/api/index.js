@@ -12,6 +12,7 @@ export const getTransactionById = id => api.get(`/transaction/${id}`)
 //export const getAllCustomers = () => api.get(`/customers`)
 export const getAllOrders = () => api.get(`/orders`)
 export const getAllProducts = () => api.get(`/products`)
+//export const getAllMyDataset = () => api.get(`/dataset`)
 
 const apis = {
     insertTransaction,
@@ -20,7 +21,8 @@ const apis = {
     deleteTransactionById,
     getTransactionById,
     getAllOrders,
-    getAllProducts
+    getAllProducts,
+    //getMyDataset
 
 }
 
