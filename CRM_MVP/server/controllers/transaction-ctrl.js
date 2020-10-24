@@ -140,6 +140,8 @@ getTransactions = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+/**********************    ORDERS        **************************/
+
 getOrders = async (req, res) => {
     await Transaction.find({}, (err, transactions) => {
         if (err) {
@@ -151,9 +153,9 @@ getOrders = async (req, res) => {
                 .json({ success: false, error: `Transactions not found` })
         }
         //prueba = sumBy(transactions, ({UnitPrice}) => UnitPrice)
-        sum = _.reduce(transactions.UnitPrice, function(memo, num){ return memo + num; }, 0);
+        //sum = _.reduce(transactions.UnitPrice, function(memo, num){ return memo + num; }, 0);
 
-        const ans =  _2(transactions)
+        const orders =  _2(transactions)
           .groupBy('InvoiceNo')
           .map((transaction, id) => ({
             OrderId: id, // InvoiceNo
@@ -167,7 +169,7 @@ getOrders = async (req, res) => {
           }))
           .value()
 
-        return res.status(200).json({ success: true, data: ans })
+        return res.status(200).json({ success: true, data: orders })
     }).catch(err => console.log(err))
 }
 
@@ -194,6 +196,28 @@ getCustomers = async (req, res) => {
 
 }
 
+/**********************    PRODUCTS        **************************/
+getProducts = async (req, res) => {
+    await Transaction.find({}, (err, transactions) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!transactions.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transactions not found` })
+        }
+        products = _.countBy(transactions, function(transactions) { 
+            return [transactions.StockCode, transactions.Description, transactions.UnitPrice]; 
+        });
+
+        return res.status(200).json({ success: true, data: products })
+    }).catch(err => console.log(err))
+}
+
+
+
+
 module.exports = {
     createTransaction,
     updateTransaction,
@@ -201,5 +225,6 @@ module.exports = {
     getTransactions,
     getTransactionById,
     getCustomers,
-    getOrders
+    getOrders,
+    getProducts
 }

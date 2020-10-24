@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 
 // STYLE: BOOTSTRAP & CSS
-import { GoGraph,GoListUnordered,GoTag,GoPerson,GoOrganization, GoDiffAdded, GoDatabase } from "react-icons/go";
-import { GrTransaction } from "react-icons/gr";
 import { IconContext } from "react-icons";
+import { GoGraph,GoListUnordered,GoTag,GoPerson,GoOrganization, GoDiffAdded, GoDatabase } from "react-icons/go";
+import { GiPresent } from "react-icons/gi";
+//import { GrTransaction } from "react-icons/gr";
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // SIDE BAR
@@ -14,7 +16,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 import {Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
-import { TransactionsList, TransactionsInsert, TransactionsUpdate, Dashboard, CustomerList, OrdersList } from '../pages'
+import { TransactionsList, TransactionsInsert, TransactionsUpdate, Dashboard, CustomerList, OrdersList, ProductList } from '../pages'
 
 
 class SideBar extends Component {
@@ -104,7 +106,7 @@ class SideBar extends Component {
 	                  </NavText>
 	                </NavItem>
 
-	                <NavItem eventKey="transactions/list2">
+	                <NavItem eventKey="/orders/list">
 	                  <NavIcon>
 	                    <IconContext.Provider value={{size:"2em"}}>
 	                     	<Link to="/orders/list">
@@ -115,6 +117,21 @@ class SideBar extends Component {
 	                  <NavText>
 	                    <Link to="/orders/list">
 	                    	Orders
+	                    </Link>
+	                  </NavText>
+	                </NavItem>
+
+	                <NavItem eventKey="product/list">
+	                  <NavIcon>
+	                    <IconContext.Provider value={{size:"2em"}}>
+	                     	<Link to="/product/list">
+	                      		<GiPresent />
+	                      	</Link>
+	                    </IconContext.Provider>
+	                  </NavIcon>
+	                  <NavText>
+	                    <Link to="/product/list">
+	                    	Products
 	                    </Link>
 	                  </NavText>
 	                </NavItem>
@@ -142,6 +159,7 @@ class SideBar extends Component {
 		                <Route path="/customers/list" exact component={CustomerList} />
 		                <Route path="/transactions/list" exact component={TransactionsList} />		                
 		                <Route path="/orders/list" exact component={OrdersList} />
+		                <Route path="/product/list" exact component={ProductList} />
 		                <Route path="/transactions/create" exact component={TransactionsInsert} />
 		                <Route
 		                    path="/transactions/update/:id"

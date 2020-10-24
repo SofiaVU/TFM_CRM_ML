@@ -11,6 +11,8 @@ router.get('/transaction/:id', TransactionCtrl.getTransactionById)
 router.get('/transactions', TransactionCtrl.getTransactions)
 router.get('/customers', TransactionCtrl.getCustomers)
 router.get('/orders', TransactionCtrl.getOrders)
+router.get('/products', TransactionCtrl.getProducts)
+
 
 
 module.exports = router
