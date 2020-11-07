@@ -227,20 +227,6 @@ getMyDataset = async (req, res) => {
                 .json({ success: false, error: `Transactions not found` })
         }
         
-        prueba = _.groupBy(
-            transactions, function(transactions) { 
-                return [transactions.InvoiceNo, transactions.CustomerID, transactions.Country] ; 
-            }
-        );
-
-        const prueba2 =  _2(transactions)
-            .groupBy('InvoiceNo')
-            /*.map((transaction, id)=> ({
-                CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
-
-            }))*/
-        ; 
-
         const prueba3 =  _2(transactions)
             .groupBy('InvoiceNo')
             .map((transaction, id)=> ({
@@ -249,6 +235,8 @@ getMyDataset = async (req, res) => {
                 CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
                 Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
                 Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
+                //TotalItems: _2.sumBy(transaction, 'Quantity' ),
+                //TotalRevenue: Math.round((_2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ) + Number.EPSILON) * 100) / 100, 
                 Products: Object.values(
                     _2.groupBy(transaction, function(transaction) { 
                         return [
@@ -261,11 +249,83 @@ getMyDataset = async (req, res) => {
                         StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; }))[0] ,
                         Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; }))[0] ,
                         Quantity: Object.keys(_2.groupBy(product, function(product) { return product.Quantity; }))[0] ,
+                        UnitPrice: Object.keys(_2.groupBy(product, function(product) { return product.UnitPrice; }))[0] ,
                     }))
+            }))//.values()
+        ; 
+
+        const kk2 = Object.values( _2.groupBy(transactions, function(transactions) { 
+            return [
+                transactions.CustomerID,
+                transactions.Name,  
+                transactions.InvoiceNo, 
+                transactions.InvoiceDate, 
+                transactions.Country 
+                ];
+        }))
+        .map((transaction, id)=> ({
+                InvoiceNo: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceNo; }))[0] ,
+                //CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                Name: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Name; }))[0] ,                
+                Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
+                Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
+                TotalItems: _2.sumBy(transaction, 'Quantity' ),
+                TotalRevenue: Math.round((_2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ) + Number.EPSILON) * 100) / 100, 
+                Products: Object.keys(
+                    _2.groupBy(transaction, function(transaction) { 
+                    return JSON.stringify({
+                        StockCode: transaction.StockCode,
+                        Description: transaction.Description,
+                        Quantity: transaction.Quantity,
+                        UnitPrice: transaction.UnitPrice
+                    });
+                    })
+                )
             }))
         ; 
 
-        return res.status(200).json({ success: true, data: prueba3 })
+        /*const kk3 =  Object.values( _2.groupBy(transactions, function(transaction) { 
+                        return [
+                            transaction.CustomerID, 
+                            transaction.InvoiceNo, 
+                            transaction.InvoiceDate, 
+                            transaction.Country
+                        ]; 
+                    })); */
+
+        const kk = _2(transactions)
+            .groupBy('InvoiceNo')
+            .map((transaction, id)=> ({
+                InvoiceNo: id, 
+                //CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                Name: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Name; }))[0] ,
+                Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
+                Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
+                TotalItems: _2.sumBy(transaction, 'Quantity' ),
+                TotalRevenue: Math.round((_2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ) + Number.EPSILON) * 100) / 100, 
+                Products: Object.values(                    
+                    _2.groupBy(transaction, function(transaction) { 
+                        return [
+                            transaction.CustomerID,
+                            transaction.Name,
+                            transaction.InvoiceNo, 
+                            transaction.InvoiceDate, 
+                            transaction.Country
+                        ]; 
+                    })).map((product, id)=> (
+                    {
+                        StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; })) ,
+                        Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; })) ,
+                        Quantity: Object.keys(_2.groupBy(product, function(product) { return product.Quantity; })) ,
+                        UnitPrice: Object.keys(_2.groupBy(product, function(product) { return product.UnitPrice; })) ,
+                    }))
+            }))//.values()
+        ; 
+
+
+        return res.status(200).json({ success: true, data: kk2 })
     }).catch(err => console.log(err))
 }
 

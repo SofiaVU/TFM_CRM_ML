@@ -9,7 +9,7 @@ export const getAllTransactions = () => api.get(`/transactions`)
 export const updateTransactionById = (id, payload) => api.put(`/transaction/${id}`, payload)
 export const deleteTransactionById = id => api.delete(`/transaction/${id}`)
 export const getTransactionById = id => api.get(`/transaction/${id}`)
-//export const getAllCustomers = () => api.get(`/customers`)
+export const getAllCustomers = () => api.get(`/customers`)
 export const getAllOrders = () => api.get(`/orders`)
 export const getAllProducts = () => api.get(`/products`)
 //export const getAllMyDataset = () => api.get(`/dataset`)
@@ -20,6 +20,7 @@ const apis = {
     updateTransactionById,
     deleteTransactionById,
     getTransactionById,
+    getAllCustomers,
     getAllOrders,
     getAllProducts,
     //getMyDataset

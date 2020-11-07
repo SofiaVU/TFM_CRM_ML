@@ -88,7 +88,7 @@ class OrdersList extends Component {
 
             {
                 Header: 'Order ID',
-                accessor: 'OrderId',
+                accessor: 'InvoiceNo',
                 filterable: true,
             },
             {
@@ -113,8 +113,8 @@ class OrdersList extends Component {
                 filterable: true,
             },
             {
-                Header: 'Revenue',
-                accessor: 'Revenue',
+                Header: 'Revenue [$]',
+                accessor: 'TotalRevenue',
                 filterable: true,
             },            
         ]
@@ -131,7 +131,7 @@ class OrdersList extends Component {
                         data={orders}
                         columns={columns}
                         loading={isLoading}
-                        defaultPageSize={20}
+                        defaultPageSize={10}
                         showPageSizeOptions={true}
                         minRows={0}
                         style={{textAlign: "center" }}

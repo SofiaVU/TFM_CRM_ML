@@ -25,3 +25,6 @@ app.get('/sofia', (req, res) => {
 app.use('/api', transactionRouter)
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
+
+//app.keepAliveTimeout = 100 * 1000;
+//app.headersTimeout = 120 * 1000; // This should be bigger than `keepAliveTimeout + your server's expected response time`

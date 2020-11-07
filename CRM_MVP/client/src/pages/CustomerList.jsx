@@ -31,12 +31,15 @@ class CustomerList extends Component {
   render(){
     let customerList = [];
     console.log("TRAZA 2")
-    console.log(this.state.customers)
-    console.log(this.state.customers.data)
+    //console.log(this.state.customers)
+    //console.log(this.state.customers.data)
+
     //if(this.state.customers.data) {console.log(Object.keys(this.state.customers.data).length)}
     if(this.state.customers.data) {
-      customerList = Object.keys(this.state.customers.data).map((customer, index) => {
-        console.log(customer.split(',')[0])
+      //console.log(this.state.customers.data[0].Country)
+      customerList = Object.values(this.state.customers.data).map((customer, index) => {
+        //console.log("CUSTOMER")
+        console.log(customer)
         return (
           //console.log(customer.split(',')[0]) 
           //console.log(customer)
@@ -44,20 +47,6 @@ class CustomerList extends Component {
         );
        });
     }
-
-    /*customerList = (this.state.customers).map((customer, index) => {
-      return (
-        <CustomerItem key={index}
-                      customer={customer}
-                      firstName={customer.firstName[index]}
-                      lastName={customer.lastName[index]}
-                      memberId={customer.id[index]}
-                      avatar={pepe}
-        />
-       );
-     });*/
-
-    //if(this.state.customers === null || this.state.customers === undefined) {
     if(!this.state.customers.data) {
       return(<h1>Cargando . . . </h1>);
     }
@@ -88,5 +77,4 @@ class CustomerList extends Component {
   }
 };
 export default CustomerList;
-//<th>Rewards</th>
-//<th>Membership</th>
+
