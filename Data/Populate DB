@@ -1,0 +1,5 @@
+/*** Command to import data into DB ***/
+mongoimport --db CRM_eCommerce --collection server2 --file csvOnlineRetail.json --jsonArray
+
+
+mongoimport --db DB_Simplified_21oct20 --collection transactions --file DataSet_31Oct20.json --jsonArray

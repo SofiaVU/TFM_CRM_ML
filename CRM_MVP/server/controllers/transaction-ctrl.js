@@ -233,39 +233,38 @@ getMyDataset = async (req, res) => {
             }
         );
 
-        const prueba2 =  _2(transactions)
-            .groupBy('InvoiceNo')
-            /*.map((transaction, id)=> ({
-                CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
-
-            }))*/
-        ; 
-
-        const prueba3 =  _2(transactions)
-            .groupBy('InvoiceNo')
-            .map((transaction, id)=> ({
-                InvoiceNo: id, 
+        const dataset = Object.values( _2.groupBy(transactions, function(transactions) { 
+            return [
+                transactions.CustomerID,
+                transactions.Name,  
+                transactions.InvoiceNo, 
+                transactions.InvoiceDate, 
+                transactions.Country 
+                ];
+        }))
+        .map((transaction, id)=> ({
+                InvoiceNo: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceNo; }))[0] ,
                 //CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
                 CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                Name: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Name; }))[0] ,                
                 Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
                 Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
-                Products: Object.values(
+                TotalItems: _2.sumBy(transaction, 'Quantity' ),
+                TotalRevenue: Math.round((_2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ) + Number.EPSILON) * 100) / 100, 
+                Products: Object.keys(
                     _2.groupBy(transaction, function(transaction) { 
-                        return [
-                            transaction.CustomerID, 
-                            transaction.InvoiceNo, 
-                            transaction.InvoiceDate, 
-                            transaction.Country
-                        ]; 
-                    })).map((product, id)=> ({
-                        StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; }))[0] ,
-                        Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; }))[0] ,
-                        Quantity: Object.keys(_2.groupBy(product, function(product) { return product.Quantity; }))[0] ,
-                    }))
+                    return JSON.stringify({
+                        StockCode: transaction.StockCode,
+                        Description: transaction.Description,
+                        Quantity: transaction.Quantity,
+                        UnitPrice: transaction.UnitPrice
+                    });
+                    })
+                )
             }))
-        ; 
+        ;
 
-        return res.status(200).json({ success: true, data: prueba3 })
+        return res.status(200).json({ success: true, data: dataset })
     }).catch(err => console.log(err))
 }
 
