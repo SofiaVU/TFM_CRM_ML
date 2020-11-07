@@ -226,12 +226,6 @@ getMyDataset = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Transactions not found` })
         }
-        
-        prueba = _.groupBy(
-            transactions, function(transactions) { 
-                return [transactions.InvoiceNo, transactions.CustomerID, transactions.Country] ; 
-            }
-        );
 
         const dataset = Object.values( _2.groupBy(transactions, function(transactions) { 
             return [
