@@ -174,7 +174,6 @@ getOrders = async (req, res) => {
 }
 
 /**********************    CUSTOMERS        **************************/
-
 getCustomers = async (req, res) => {
     
     await Transaction.find({}, (err, transactions) => {
@@ -186,14 +185,10 @@ getCustomers = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Transactions not found` })
         }
-        customers = _.countBy(transactions, function(transactions) { return [transactions.CustomerID, transactions.Country, transactions.FirstName, transactions.LastName ]; });
-        //customers = _.groupBy(transactions, function(transactions) { return transactions.CustomerID; });
-        //customers2 = _.groupBy(customers, function(customers) { return customers.InvoiceNo; });
-        // return { 'CustomerID': transactions.CustomerID, 'Country': transactions.Country }
-        //return res.status(200).json({ success: true, data: customers })
+        customers = _.countBy(transactions, function(transactions) { return [transactions.CustomerID, transactions.Country, transactions.Name]; });
+
         return res.status(200).json({ success: true, data: customers })
     }).catch(err => console.log(err))
-
 }
 
 /**********************    PRODUCTS        **************************/
@@ -238,8 +233,7 @@ getMyDataset = async (req, res) => {
         }))
         .map((transaction, id)=> ({
                 InvoiceNo: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceNo; }))[0] ,
-                //CustomerId: Object.values(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
-                CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
+                CustomerID: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
                 Name: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Name; }))[0] ,                
                 Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
                 Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
