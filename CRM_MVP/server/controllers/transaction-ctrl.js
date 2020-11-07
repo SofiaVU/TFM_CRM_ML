@@ -185,7 +185,20 @@ getCustomers = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Transactions not found` })
         }
-        customers = _.countBy(transactions, function(transactions) { return [transactions.CustomerID, transactions.Country, transactions.Name]; });
+        //customers = _.countBy(transactions, function(transactions) { return [transactions.CustomerID, transactions.Country, transactions.Name]; });
+        const customers_aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
+        const customers_aux2 = _2.reject(customers_aux, function(o) { return o.Country==''; })
+        const customers_aux3 = _2.reject(customers_aux2, function(o) { return o.Name==''; })
+
+        const customers = _2(customers_aux3) // (transactions) --ª eliminamos los countries numericos
+          .groupBy('CustomerID')
+          .map((transaction, id) => ({
+            CustomerID: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0]  ,
+            Name: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Name; }))[0] ,
+            Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0]
+            
+          }))
+          .value()
 
         return res.status(200).json({ success: true, data: customers })
     }).catch(err => console.log(err))

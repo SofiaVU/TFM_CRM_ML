@@ -6,6 +6,10 @@ import styled from 'styled-components'
 
 import 'react-table-6/react-table.css'
 
+import {Image} from "react-bootstrap";
+import edit from './../assets/icons/edit3.png'; 
+import pepe from './../assets/pepe.jpg'; 
+
 /**  STYLES  **/
 const Wrapper = styled.div`
     padding: 0 0px 0px 0px;
@@ -59,15 +63,15 @@ class CustomerList extends Component {
             {
                 Header: 'First Name',
                 id: 'id',
-                accessor: 'Name',
+                accessor: row => row.['Name'].split(" ")[0],
                 filterable: true,
             },
-            /*{
+            {
                 Header: 'Last Name',
                 id: 'id',
                 accessor: row => row.['Name'].split(" ")[1],
                 filterable: true,
-            },*/
+            },
             /*{
                 Header: 'Name',
                 accessor: row => return (<Image className="ui small rounded image" alt="pepe" src={pepe} height="42" width="42" rounded />) ,
