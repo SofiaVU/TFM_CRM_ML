@@ -1,68 +1,121 @@
-import React, {Component} from 'react';
-import {Jumbotron, Table} from "react-bootstrap";
-import ProductItem from "./../components/ProductItem";
-import axios from 'axios'; // CALLS to API
+import React, { Component } from 'react'
+import ReactTable from 'react-table-6'
+import api from '../api'
 
+//var _2 = require('lodash')
+//import _2 from 'lodash'
+
+import styled from 'styled-components'
+
+import 'react-table-6/react-table.css'
+
+/**  STYLES  **/
+const Wrapper = styled.div`
+    padding: 0 0px 0px 0px;
+`
+const Update = styled.div`
+    color: #ef9b0f;
+    cursor: pointer;
+`
+
+const Delete = styled.div`
+    color: #ff0000;
+    cursor: pointer;
+`
+
+/*******************************
+         CLASS LIST 
+********************************/
 
 class ProductList extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            products: [],
+            columns: [],
+            isLoading: false,
+        }
+    }
 
-  // CONSTRUCTOR -> STATE DECLARATION
-  constructor(props){
-    super(props);
-    this.state = {
-      customers: []
-    };
-  }
+    componentDidMount = async () => {
+        this.setState({ isLoading: true })
 
-  // COMPONENT DID MOUNT
-  componentDidMount = () => {
-    axios.get('http://localhost:3000/api/products').then((res) => {
-      this.setState({products: res.data});
-      console.log("ComponentDidMount API call at productList");
-      console.log(this.state.products);
-    }).catch ((err) => {
-      console.log(err);
-    });
-  }
+        await api.getAllProducts().then(products => {
+            this.setState({
+                products: products.data.data,
+                isLoading: false,
+            })
+        })
+    }
 
-  render(){
-    let productList = [];
-    console.log("TRAZA 2")
-    console.log(this.state.products)
+    render() {
+        const { products, isLoading } = this.state
+        console.log('TCL: productList -> render -> products', products)
 
-    if(this.state.products != undefined) {
-      productList = Object.keys(this.state.products.data).map((product, index) => {
-        //console.log(product.split(',')[0])
+        const productJSON = products.map(function(transaction) {
+          return JSON.parse(transaction.Products.values().next().value);
+        })
+        console.log(productJSON)
+
+        /*************************** LODASH Logica de Negocio **********************************************************/
+        
+        /*var aux = _2.reject(productJSON, function(o) { return o.StockCode.match('[a-z]'); })
+        var aux2 = _2.reject(aux, function(o) { return o.StockCode.match('[A-Z]'); })
+        var aux3 = _2.reject(aux2, function(o) { return o.StockCode==''; }) */
+        
+
+        /*const groupedProducts= _2.(aux3)
+        .groupBy('StockCode')
+          .map((product, id) => ({
+            StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; }))[0]  ,
+            Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; }))[0] ,
+            UnitPrice: Object.keys(_2.groupBy(product, function(product) { return product.UnitPrice; }))[0]
+            
+          }))
+          .value()
+          console.log(groupedProducts) */
+        /****************************************************************************************************************/
+        const columns = [
+
+            {
+                Header: 'Stock Code',
+                accessor: 'StockCode',
+                filterable: true,
+            },
+            {
+                Header: 'Description',
+                accessor: 'Description',
+                filterable: true,
+            },
+            {
+                Header: 'Unit Price',
+                accessor: 'UnitPrice',
+                filterable: true,
+            },           
+        ]
+
+        let showTable = true
+        if (!products.length) {
+            showTable = false
+        }
+
         return (
-          <ProductItem key={index} product={product} />
-        );
-       });
+            <Wrapper>
+               <h2>products ({productArray.length})</h2><br/>
+                {showTable && (
+                    <ReactTable
+                        data={productArray}
+                        columns={columns}
+                        loading={isLoading}
+                        defaultPageSize={10}
+                        showPageSizeOptions={true}
+                        minRows={0}
+                        style={{textAlign: "center" }}
+                    />
+                )}
+            </Wrapper>
+        )
     }
+}
 
-    if(this.state.products == undefined) {
-      return(<h1>Cargando . . . </h1>);
-    }
-    else{
-      return (
-        <Jumbotron style={{backgroundColor:'#fff', width:'90%', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px'}}>
-          <h2>Products ({Object.keys(this.state.products.data).length})</h2><br/>
-          <Table responsive style={{textAlign: 'center'}}>
-            <thead>
-            <tr>
-              <th>Stock Code</th>
-              <th>Description</th>
-              <th>UnitPrice</th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {productList}
-            </tbody>
-          </Table>
-        </Jumbotron>
-      );
-    }
-  }
-};
-export default ProductList;
-
+export default ProductList

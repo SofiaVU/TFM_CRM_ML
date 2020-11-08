@@ -205,9 +205,21 @@ getProducts = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Transactions not found` })
         }
-        products = _.countBy(transactions, function(transactions) { 
-            return [transactions.StockCode, transactions.Description, transactions.UnitPrice]; 
-        });
+
+        const p_aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
+        const p_aux2 = _2.reject(p_aux, function(o) { return o.Country==''; })
+        const p_aux3 = _2.reject(p_aux2, function(o) { return o.CustomerID==''; })
+        const p_aux4 = _2.reject(p_aux3, function(o) { return o.InvoiceNo== undefined; })
+        const products = _2.reject(p_aux4, function(o) { return o.Name==''; })
+
+        /*products2 = _2(products) 
+        .map((transaction, id) => ({
+          Products: transaction.Products
+        }))*/
+
+        /*const productArray = products.map(function(transaction) {
+            return JSON.parse(transaction.Products.values().next().value);
+         })*/
 
         return res.status(200).json({ success: true, data: products })
     }).catch(err => console.log(err))
