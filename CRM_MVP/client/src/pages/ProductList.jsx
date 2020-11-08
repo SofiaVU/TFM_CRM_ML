@@ -101,10 +101,10 @@ class ProductList extends Component {
 
         return (
             <Wrapper>
-               <h2>products ({productArray.length})</h2><br/>
+               <h2>products ({productJSON.length})</h2><br/>
                 {showTable && (
                     <ReactTable
-                        data={productArray}
+                        data={productJSON}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={10}
