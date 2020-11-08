@@ -140,7 +140,7 @@ getTransactions = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
-/**********************    ORDERS        **************************/
+/**********************    ORDERS/ TRANSCTIONS    **************************/
 
 getOrders = async (req, res) => {
     await Transaction.find({}, (err, transactions) => {
@@ -152,24 +152,14 @@ getOrders = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Transactions not found` })
         }
-        //prueba = sumBy(transactions, ({UnitPrice}) => UnitPrice)
-        //sum = _.reduce(transactions.UnitPrice, function(memo, num){ return memo + num; }, 0);
 
-        const orders =  _2(transactions)
-          .groupBy('InvoiceNo')
-          .map((transaction, id) => ({
-            OrderId: id, // InvoiceNo
-            CustomerId: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0] ,
-            Country: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Country; }))[0] ,
-            //Date: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0],
-            Date: convert(Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.InvoiceDate; }))[0]) , 
-            TotalItems: _2.sumBy(transaction, 'Quantity' ),
-            //Revenue: _2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ),
-            Revenue: Math.round((_2.sumBy(transaction,  x => (x.Quantity * x.UnitPrice) ) + Number.EPSILON) * 100) / 100
-          }))
-          .value()
+        const tx_aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
+        const tx_aux2 = _2.reject(tx_aux, function(o) { return o.Country==''; })
+        const tx_aux3 = _2.reject(tx_aux2, function(o) { return o.CustomerID==''; })
+        const tx_aux4 = _2.reject(tx_aux3, function(o) { return o.InvoiceNo== undefined; })
+        const tx = _2.reject(tx_aux4, function(o) { return o.Name==''; })
 
-        return res.status(200).json({ success: true, data: orders })
+        return res.status(200).json({ success: true, data: tx })
     }).catch(err => console.log(err))
 }
 

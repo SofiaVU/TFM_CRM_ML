@@ -21,41 +21,6 @@ const Delete = styled.div`
 `
 
 /*******************************
-         CLASS UPDATE 
-********************************/
-/*class UpdateTransaction extends Component {
-    updateUser = event => {
-        event.preventDefault()
-
-        window.location.href = `/transactions/update/${this.props.id}`
-    }
-
-    render() {
-        return <Update onClick={this.updateUser}>Update</Update>
-    }
-}*/
-/*******************************
-         CLASS DELETE 
-********************************/
-/*class DeleteTransaction extends Component {
-    deleteUser = event => {
-        event.preventDefault()
-
-        if (
-            window.confirm(
-                `Do you want to delete the transaction ${this.props.id} permanently?`,
-            )
-        ) {
-            api.deleteTransactionById(this.props.id)
-            window.location.reload()
-        }
-    }
-
-    render() {
-        return <Delete onClick={this.deleteUser}>Delete</Delete>
-    }
-}*/
-/*******************************
          CLASS LIST 
 ********************************/
 
@@ -88,12 +53,12 @@ class OrdersList extends Component {
 
             {
                 Header: 'Order ID',
-                accessor: 'OrderId',
+                accessor: 'InvoiceNo',
                 filterable: true,
             },
             {
                 Header: 'Customer ID',
-                accessor: 'CustomerId',
+                accessor: 'CustomerID',
                 filterable: true,
             },
             {
@@ -114,7 +79,7 @@ class OrdersList extends Component {
             },
             {
                 Header: 'Revenue',
-                accessor: 'Revenue',
+                accessor: 'TotalRevenue',
                 filterable: true,
             },            
         ]
@@ -126,6 +91,7 @@ class OrdersList extends Component {
 
         return (
             <Wrapper>
+                <h2>Orders ({orders.length})</h2><br/>
                 {showTable && (
                     <ReactTable
                         data={orders}
