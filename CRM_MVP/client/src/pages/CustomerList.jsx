@@ -98,6 +98,7 @@ class CustomerList extends Component {
 
         return (
             <Wrapper>
+               <h2>Customers ({customers.length})</h2><br/>
                 {showTable && (
                     <ReactTable
                         data={customers}
