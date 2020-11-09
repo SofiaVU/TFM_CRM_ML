@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import ReactTable from 'react-table-6'
 import api from '../api'
 
-//var _2 = require('lodash')
-//import _2 from 'lodash'
+var _ = require('lodash')
 
 import styled from 'styled-components'
 
@@ -55,26 +54,17 @@ class ProductList extends Component {
         const productJSON = products.map(function(transaction) {
           return JSON.parse(transaction.Products.values().next().value);
         })
-        console.log(productJSON)
+        //console.log(productJSON)
 
-        /*************************** LODASH Logica de Negocio **********************************************************/
-        
-        /*var aux = _2.reject(productJSON, function(o) { return o.StockCode.match('[a-z]'); })
-        var aux2 = _2.reject(aux, function(o) { return o.StockCode.match('[A-Z]'); })
-        var aux3 = _2.reject(aux2, function(o) { return o.StockCode==''; }) */
-        
-
-        /*const groupedProducts= _2.(aux3)
-        .groupBy('StockCode')
-          .map((product, id) => ({
-            StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; }))[0]  ,
-            Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; }))[0] ,
-            UnitPrice: Object.keys(_2.groupBy(product, function(product) { return product.UnitPrice; }))[0]
-            
+        const aux = _.groupBy(productJSON,  'StockCode');
+        const groupedProducts = _.map(aux,(product, id) => ({
+            StockCode: Object.keys(_.groupBy(product, function(product) { return product.StockCode; }))[0],
+            Description: Object.keys(_.groupBy(product, function(product) { return product.Description; }))[0],
+            UnitPrice: Object.keys(_.groupBy(product, function(product) { return product.UnitPrice; }))[0] 
           }))
-          .value()
-          console.log(groupedProducts) */
-        /****************************************************************************************************************/
+        ;
+        //console.log(groupedProducts)
+
         const columns = [
 
             {
@@ -101,10 +91,10 @@ class ProductList extends Component {
 
         return (
             <Wrapper>
-               <h2>products ({productJSON.length})</h2><br/>
+               <h2>products ({groupedProducts.length})</h2><br/>
                 {showTable && (
                     <ReactTable
-                        data={productJSON}
+                        data={groupedProducts}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={10}

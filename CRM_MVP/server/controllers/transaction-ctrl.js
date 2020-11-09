@@ -212,15 +212,6 @@ getProducts = async (req, res) => {
         const p_aux4 = _2.reject(p_aux3, function(o) { return o.InvoiceNo== undefined; })
         const products = _2.reject(p_aux4, function(o) { return o.Name==''; })
 
-        /*products2 = _2(products) 
-        .map((transaction, id) => ({
-          Products: transaction.Products
-        }))*/
-
-        /*const productArray = products.map(function(transaction) {
-            return JSON.parse(transaction.Products.values().next().value);
-         })*/
-
         return res.status(200).json({ success: true, data: products })
     }).catch(err => console.log(err))
 }
