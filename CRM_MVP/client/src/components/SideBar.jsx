@@ -91,21 +91,6 @@ class SideBar extends Component {
 	                  </NavText>
 	                </NavItem>
 
-	                <NavItem eventKey="transactions/list">
-	                  <NavIcon>
-	                    <IconContext.Provider value={{size:"2em"}}>
-	                     	<Link to="/transactions/list">
-	                      		<GoDatabase />
-	                      	</Link>
-	                    </IconContext.Provider>
-	                  </NavIcon>
-	                  <NavText>
-	                    <Link to="/transactions/list">
-	                    	Database
-	                    </Link>
-	                  </NavText>
-	                </NavItem>
-
 	                <NavItem eventKey="/orders/list">
 	                  <NavIcon>
 	                    <IconContext.Provider value={{size:"2em"}}>
@@ -156,8 +141,7 @@ class SideBar extends Component {
 	            <main style={this.state.style} >
 		            <Switch>
 		                <Route path="/dashboard" exact component={Dashboard} />
-		                <Route path="/customers/list" exact component={CustomerList} />
-		                <Route path="/transactions/list" exact component={TransactionsList} />		                
+		                <Route path="/customers/list" exact component={CustomerList} />		                
 		                <Route path="/orders/list" exact component={OrdersList} />
 		                <Route path="/product/list" exact component={ProductList} />
 		                <Route path="/transactions/create" exact component={TransactionsInsert} />
