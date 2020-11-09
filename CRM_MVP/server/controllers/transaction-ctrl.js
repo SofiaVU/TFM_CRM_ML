@@ -15,7 +15,22 @@ function convert(str) {
   return [date.getFullYear(), mnth, day].join("-");
 }
 
+function clean_data(transactions){
+    /*** Clean dataset ***/
+    const aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
+    const aux2 = _2.reject(aux, function(o) { return o.Country==''; })
+    const aux3 = _2.reject(aux2, function(o) { return o.CustomerID==''; })
+    const aux4 = _2.reject(aux3, function(o) { return o.InvoiceNo== undefined; })
+    const clean_transactions = _2.reject(aux4, function(o) { return o.Name==''; })
+
+    return clean_transactions
+}
+
 /*********************************************/
+
+/**************************************************************************************************************************************************************************/
+/***********************************************                     NEED TO CHECK FUNTIONS                      **********************************************************/
+/**************************************************************************************************************************************************************************/
 
 createTransaction = (req, res) => {
     const body = req.body
@@ -139,6 +154,9 @@ getTransactions = async (req, res) => {
         return res.status(200).json({ success: true, data: transactions })
     }).catch(err => console.log(err))
 }
+/**************************************************************************************************************************************************************************/
+/***********************************************                         END CHECK FUNTIONS                      **********************************************************/
+/**************************************************************************************************************************************************************************/
 
 /**********************    ORDERS/ TRANSCTIONS    **************************/
 
@@ -153,11 +171,7 @@ getOrders = async (req, res) => {
                 .json({ success: false, error: `Transactions not found` })
         }
 
-        const tx_aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
-        const tx_aux2 = _2.reject(tx_aux, function(o) { return o.Country==''; })
-        const tx_aux3 = _2.reject(tx_aux2, function(o) { return o.CustomerID==''; })
-        const tx_aux4 = _2.reject(tx_aux3, function(o) { return o.InvoiceNo== undefined; })
-        const tx = _2.reject(tx_aux4, function(o) { return o.Name==''; })
+       const tx = clean_data(transactions)
 
         return res.status(200).json({ success: true, data: tx })
     }).catch(err => console.log(err))
@@ -175,12 +189,10 @@ getCustomers = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Transactions not found` })
         }
-        //customers = _.countBy(transactions, function(transactions) { return [transactions.CustomerID, transactions.Country, transactions.Name]; });
-        const customers_aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
-        const customers_aux2 = _2.reject(customers_aux, function(o) { return o.Country==''; })
-        const customers_aux3 = _2.reject(customers_aux2, function(o) { return o.Name==''; })
 
-        const customers = _2(customers_aux3) // (transactions) --ª eliminamos los countries numericos
+       const clean_transactions = clean_data(transactions)
+
+       const customers = _2(clean_transactions) // (transactions) --ª eliminamos los countries numericos
           .groupBy('CustomerID')
           .map((transaction, id) => ({
             CustomerID: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0]  ,
@@ -206,17 +218,13 @@ getProducts = async (req, res) => {
                 .json({ success: false, error: `Transactions not found` })
         }
 
-        const p_aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
-        const p_aux2 = _2.reject(p_aux, function(o) { return o.Country==''; })
-        const p_aux3 = _2.reject(p_aux2, function(o) { return o.CustomerID==''; })
-        const p_aux4 = _2.reject(p_aux3, function(o) { return o.InvoiceNo== undefined; })
-        const products = _2.reject(p_aux4, function(o) { return o.Name==''; })
+       const products = clean_data(transactions)
 
         return res.status(200).json({ success: true, data: products })
     }).catch(err => console.log(err))
 }
 
-/**********************    MY DATASET        **************************/
+/**********************    MY DATASET  (DELETE)       **************************/
 getMyDataset = async (req, res) => {
     await Transaction.find({}, (err, transactions) => {
         if (err) {
@@ -259,6 +267,35 @@ getMyDataset = async (req, res) => {
         ;
 
         return res.status(200).json({ success: true, data: dataset })
+    }).catch(err => console.log(err))
+}
+
+/**********************    SUMUP INFO FOR INFOBOXES (Dashboard Page)    **************************/
+
+getInfoBoxes = async (req, res) => {
+    await Transaction.find({}, (err, transactions) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!transactions.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transactions not found` })
+        }
+        
+       const clean_transactions = clean_data(transactions)
+
+        const customers = _2(clean_transactions) // (transactions) --ª eliminamos los countries numericos
+        .groupBy('CustomerID')
+        .map((transaction, id) => ({
+            CustomerID: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0]            
+        })).value()
+        
+        const data = {
+            TotalCustomers: customers.length
+        }
+
+        return res.status(200).json({ success: true, data: data })
     }).catch(err => console.log(err))
 }
 
