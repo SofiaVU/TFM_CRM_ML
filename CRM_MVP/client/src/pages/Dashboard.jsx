@@ -13,6 +13,10 @@ class Dashboard extends Component {
   render(){
     return (
       <Container fluid>
+        <h1>Dashboard Page</h1><br />
+        <Row>
+          <InfoBoxes /><br/>
+        </Row><br />
         <Row>
           <InfoBoxes /><br/>
         </Row><br />

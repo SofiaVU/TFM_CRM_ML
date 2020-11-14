@@ -1,6 +1,3 @@
-//import { map, tail, times, uniq } from 'lodash';
-//import _ from 'lodash';
- 
 const Transaction = require('../models/transaction-model')
 var _ = require('underscore-node')
 var _2 = require('lodash')
@@ -282,17 +279,42 @@ getInfoBoxes = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Transactions not found` })
         }
-        
+
        const clean_transactions = clean_data(transactions)
 
-        const customers = _2(clean_transactions) // (transactions) --ª eliminamos los countries numericos
-        .groupBy('CustomerID')
-        .map((transaction, id) => ({
-            CustomerID: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0]            
+       // TOTAL NUM CUSTOMERS
+       const customers = _2(clean_transactions) 
+       .groupBy('CustomerID')
+       .map((transaction, id) => ({
+           CustomerID: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.CustomerID; }))[0]            
         })).value()
+
+        // TOTAL REVENUE (all history)
+        const rev = _2(clean_transactions)
+        .map((transaction, id) => ({
+            TotalRev: _2.pickBy(_2.countBy(transaction, 'TotalRevenue'), function(value, key) {
+                return !(value === 6);
+              }),
+         })).value()
+   
+        const cleanRev = _2(rev).map((transaction, id) => ({
+            Revenue: parseFloat(Object.keys(transaction.TotalRev)[0]),
+         })).value()
+
+        const totalRev = _2.sumBy(cleanRev, 'Revenue')
+
+        // TOTAL SOLD ITEMS (all history)
+        const txTotalItems = _2(clean_transactions) 
+        .map((transaction, id) => ({
+            TotalItems: parseInt(Object.keys(_2.countBy(transaction, 'TotalItems'))[0])
+         })).value()
+        const totalItems = _2.sumBy(txTotalItems, 'TotalItems')
         
+        // INFOBOX DATA 
         const data = {
-            TotalCustomers: customers.length
+            TotalCustomers: customers.length,
+            TotalRevenue: totalRev,
+            TotalSoldItems: totalItems,
         }
 
         return res.status(200).json({ success: true, data: data })
@@ -311,5 +333,6 @@ module.exports = {
     getCustomers,
     getOrders,
     getProducts,
+    getInfoBoxes,
     getMyDataset
 }
