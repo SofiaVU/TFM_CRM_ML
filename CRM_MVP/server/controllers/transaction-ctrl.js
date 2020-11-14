@@ -292,21 +292,14 @@ getInfoBoxes = async (req, res) => {
         // TOTAL REVENUE (all history)
         const rev = _2(clean_transactions)
         .map((transaction, id) => ({
-            TotalRev: _2.pickBy(_2.countBy(transaction, 'TotalRevenue'), function(value, key) {
-                return !(value === 6);
-              }),
+            Revenue: transaction.TotalRevenue
          })).value()
-   
-        const cleanRev = _2(rev).map((transaction, id) => ({
-            Revenue: parseFloat(Object.keys(transaction.TotalRev)[0]),
-         })).value()
-
-        const totalRev = _2.sumBy(cleanRev, 'Revenue')
+        const totalRev = _2.sumBy(rev, 'Revenue')
 
         // TOTAL SOLD ITEMS (all history)
         const txTotalItems = _2(clean_transactions) 
         .map((transaction, id) => ({
-            TotalItems: parseInt(Object.keys(_2.countBy(transaction, 'TotalItems'))[0])
+            TotalItems: transaction.TotalItems
          })).value()
         const totalItems = _2.sumBy(txTotalItems, 'TotalItems')
         
@@ -315,12 +308,42 @@ getInfoBoxes = async (req, res) => {
             TotalCustomers: customers.length,
             TotalRevenue: totalRev,
             TotalSoldItems: totalItems,
+            TotalTransactions: clean_transactions.length,
+            MonthlyRevenue: "XX",
+            MonthlyGrowth: "XX", 
+            CustomerMonthlyGrowth: "xx",
+            MonthlySoldItem: "XX"
         }
 
         return res.status(200).json({ success: true, data: data })
     }).catch(err => console.log(err))
 }
 
+/**********************   REVENUE BY MONTH ( GRAPH )   **************************/
+
+getMonthlyGrowth= async (req, res) => {
+    await Transaction.find({}, (err, transactions) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!transactions.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transactions not found` })
+        }
+
+       const clean_transactions = clean_data(transactions)
+
+       // TOTAL NUM CUSTOMERS
+       const date_rev = _2(clean_transactions) 
+       .map((transaction, id) => ({
+           Date: transaction.TotalRevenue           
+        })).value()
+
+
+        return res.status(200).json({ success: true, data: date_rev })
+    }).catch(err => console.log(err))
+}
 
 
 
@@ -334,5 +357,6 @@ module.exports = {
     getOrders,
     getProducts,
     getInfoBoxes,
+    getMonthlyGrowth,
     getMyDataset
 }
