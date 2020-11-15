@@ -1,6 +1,7 @@
 const Transaction = require('../models/transaction-model')
 var _ = require('underscore-node')
-var _2 = require('lodash')
+var _2 = require('lodash');
+const { sumBy } = require('lodash');
 
 
 /********** AUX FUNCTIONS *******************/
@@ -18,9 +19,15 @@ function clean_data(transactions){
     const aux2 = _2.reject(aux, function(o) { return o.Country==''; })
     const aux3 = _2.reject(aux2, function(o) { return o.CustomerID==''; })
     const aux4 = _2.reject(aux3, function(o) { return o.InvoiceNo== undefined; })
-    const clean_transactions = _2.reject(aux4, function(o) { return o.Name==''; })
+    const aux5= _2.reject(aux4, function(o) { return o.Date== undefined; })
+    const clean_transactions = _2.reject(aux5, function(o) { return o.Name==''; })
 
     return clean_transactions
+}
+
+function niceMonth(date){
+    return ("0" + (date.getMonth() + 1)).slice(-2)
+
 }
 
 /*********************************************/
@@ -321,7 +328,7 @@ getInfoBoxes = async (req, res) => {
 
 /**********************   REVENUE BY MONTH ( GRAPH )   **************************/
 
-getMonthlyGrowth= async (req, res) => {
+getMonthlyRevenue= async (req, res) => {
     await Transaction.find({}, (err, transactions) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
@@ -337,11 +344,24 @@ getMonthlyGrowth= async (req, res) => {
        // TOTAL NUM CUSTOMERS
        const date_rev = _2(clean_transactions) 
        .map((transaction, id) => ({
-           Date: transaction.TotalRevenue           
+           Date: transaction.Date,
+           Year: (transaction.Date.getUTCFullYear()),
+           Month: (transaction.Date.getMonth()+ 1), // //months from 1-12 --> getMonth returns Janary = 0
+           Day: (transaction.Date.getUTCDate()), 
+           YearMonth: Number(String(transaction.Date.getUTCFullYear()) + niceMonth(transaction.Date)),
+           //Hour: (transaction.Date.getUTCHours()), 
+           //Minute: (transaction.Date.getUTCMinutes()), 
+           Revenue: transaction.TotalRevenue
         })).value()
 
+        const montly_rev =  _2(date_rev)
+        .groupBy('YearMonth')
+        .map((transaction, id) => ({
+            YearMonth: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.YearMonth; }))[0],
+            TotalRevenue: sumBy(transaction, "Revenue")           
+        })).value() 
 
-        return res.status(200).json({ success: true, data: date_rev })
+        return res.status(200).json({ success: true, data: montly_rev })
     }).catch(err => console.log(err))
 }
 
@@ -357,6 +377,6 @@ module.exports = {
     getOrders,
     getProducts,
     getInfoBoxes,
-    getMonthlyGrowth,
+    getMonthlyRevenue,
     getMyDataset
 }
