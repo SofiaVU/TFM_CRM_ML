@@ -12,14 +12,6 @@ const Transaction = new Schema(
 		TotalRevenue: { type: Number,   required: true  },
 		TotalRevenue: { type: Object,   required: true  },
 
-
-
-	    //StockCode:   { type: String, required: true  },
-	    //Description: { type: String, required: false },
-	    //Quantity: 	 { type: Number, required: true  },	    
-	    //UnitPrice:   { type: Number, required: true  },	    
-	    //FirstName:   { type: String, required: false },
-	    //LastName:    { type: String, required: false }
     },
     { timestamps: true },
 )
