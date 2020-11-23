@@ -7,7 +7,7 @@ import Graph_2 from "../components/Graphs/Graph_2";
 import Graph_3 from "../components/Graphs/Graph_3";
 import Graph_4 from "../components/Graphs/Graph_4";
 
-import { Container, Row, Col} from "react-bootstrap";
+import { Container, Row, Col, Spinner, Button} from "react-bootstrap";
 
 
 class Dashboard extends React.Component {
@@ -16,7 +16,8 @@ class Dashboard extends React.Component {
     super(props)
     this.state = {
       monthlyRev: [],
-      isLoading: false,
+      infoBoxesData: [],
+      isLoading: true,
       }
   }
 
@@ -26,19 +27,54 @@ class Dashboard extends React.Component {
     await api.getMonthlyRevenue().then(monthlyRev => {
         this.setState({
           monthlyRev: monthlyRev.data.data,
-            isLoading: false,
+          //  isLoading: false,
         })
         //console.log("COMPONENT DID MOUNT")
         //console.log(monthlyRev.data.data)
     })
+
+    await api.getInfoBoxes().then(infoBoxesData => {
+      this.setState({
+        infoBoxesData: infoBoxesData.data.data,
+        //isLoading: false,
+      })
+      //console.log("COMPONENT DID MOUNT")
+      //console.log(monthlyRev.data.data)
+    })
+
+    if(this.state.monthlyRev.length != 0 && this.state.infoBoxesData.length !=0){
+      this.setState({
+        isLoading: false
+      })
+    }
+
   }
 
   render(){
+    if(this.state.isLoading == true) {
+      return(
+        <div>
+          <Button  size="lg" variant="Link" disabled>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            <span className="sr-only">Loading...</span>
+          </Button>{' '}
+          <Button size="lg" variant="Link" disabled>
+            Loading Data ...
+          </Button>
+        </div>
+      ); 
+    }
     return (
       <Container fluid>
         <h1>Dashboard Page</h1><br />
         <Row>
-          <InfoBoxes /><br/>
+          <InfoBoxes data={this.state.infoBoxesData}/><br/>
         </Row><br />
         <Row>
           <InfoBoxes /><br/>

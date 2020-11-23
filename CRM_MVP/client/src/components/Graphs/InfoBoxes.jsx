@@ -5,26 +5,21 @@ import {MdFace,MdAttachMoney,MdShoppingCart,MdShowChart} from "react-icons/md";
 import api from '../../api'
 
 class InfoBoxes extends React.Component {
-  constructor(props) {
-      super(props)
-      this.state = {
-          customers: [],
-          columns: [],
-          isLoading: false,
-      }
-  }
-
-  componentDidMount = async () => {
-      this.setState({ isLoading: true })
-
-      await api.getAllCustomers().then(customers => {
-          this.setState({
-              customers: customers.data.data,
-              isLoading: false,
-          })
-      })
-  }
   render () {
+    if(this.props.data === null || this.props.data === undefined){
+      return(
+        <p> Cargando... </p>
+      );
+    }
+    //var RevM = Math.round((Math.round(this.state.data.TotalRevenue)/1000000)*100)/100;
+    console.log(this.props.data.TotalRevenue)
+    var RevM = Math.round((Math.round(this.props.data.TotalRevenue)/1000000)*100)/100;
+    var niceRev = String(RevM).concat(" M");
+
+    //var itemsM = Math.round((Math.round(this.state.data.TotalSoldItems)/1000000)*100)/100;
+    var itemsM = Math.round((Math.round(this.props.data.TotalSoldItems)/1000000)*100)/100;
+    var niceItems = String(itemsM).concat(" M");
+
     return (
       <Container fluid>        
         <Row>
@@ -41,7 +36,7 @@ class InfoBoxes extends React.Component {
                 <Col>
                   <div style={{textAlign:'center'}}>
                     <h4>Total Sales </h4>
-                    <h3>450</h3>
+                    <h3>{this.props.data.TotalTransactions}</h3>
                   </div>
                 </Col>
               </Row>
@@ -60,8 +55,8 @@ class InfoBoxes extends React.Component {
                 </Col>
                 <Col>
                   <div style={{textAlign:'center'}}>
-                    <h4>Total Profit </h4>
-                    <h3>1K</h3>
+                    <h4>Total Revenue </h4>
+                    <h3>{niceRev}</h3>
                   </div>
                 </Col>
               </Row>
@@ -80,8 +75,8 @@ class InfoBoxes extends React.Component {
                 </Col>
                 <Col>
                   <div style={{textAlign:'center'}}>
-                    <h4>Total Profit </h4>
-                    <h3>1K</h3>
+                    <h4>Total Sold Items </h4>
+                    <h3>{niceItems}</h3>
                   </div>
                 </Col>
               </Row>
@@ -101,7 +96,7 @@ class InfoBoxes extends React.Component {
                 <Col>
                   <div style={{textAlign:'center'}}>
                     <h4>Members </h4>
-                    <h3>{this.state.customers.length}</h3>
+                    <h3>{this.props.data.TotalCustomers}</h3>
                   </div>
                 </Col>
               </Row>

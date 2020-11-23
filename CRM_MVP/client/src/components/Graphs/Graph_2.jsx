@@ -1,21 +1,6 @@
 import React, { PropTypes } from "react";
 import Paper from '@material-ui/core/Paper';
 import { BarChart, Bar, ResponsiveContainer, XAxis } from "recharts";
-import axios from 'axios'; // CALLS to API
-
-
-// CALL TO API TO RETRIEVE DATA
-function getData(){
-  axios.get('http://localhost:3000/api/monthlyRevenue').then((res) => {
-      this.setState({monthlyRevenue: res.data});
-      //console.log("CALL TO API TO RETRIEVE 'MonthlyRevenue' DATA");
-      //console.log(this.state.customers);
-      //return res.data
-    }).catch ((err) => {
-      console.log(err);
-    });
-}
-
 
 // Rojo-Rosa(ce1c58)
 const Graph_2 = props => {
@@ -66,22 +51,6 @@ const Graph_2 = props => {
     {name: 'Page E', uv: 50, pv: 100, amt: 2400},
     {name: 'Page F', uv: 0, pv: 2000, amt: 2000}
   ]; // data={props.data}
-
-  /*return (
-    <Paper style={styles.paper}>
-      <div style={{ ...styles_2.title, ...styles.header }}>
-        Monthly Sales
-      </div>
-      <div style={styles.div}>
-        <ResponsiveContainer>
-          <BarChart data={data}>
-            <Bar dataKey="uv" fill={'#975DCE'} />
-            <XAxis dataKey="name" stroke="none" tick={{ fill: '#ffff' }} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </Paper>
-  ); */
 
   return (
     <Paper style={styles.paper}>
