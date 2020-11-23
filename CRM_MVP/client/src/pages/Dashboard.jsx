@@ -15,7 +15,7 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      monthlyRev: [],
+      monthlyData: [],
       infoBoxesData: [],
       isLoading: true,
       }
@@ -24,13 +24,11 @@ class Dashboard extends React.Component {
   componentDidMount = async () => {
     this.setState({ isLoading: true })
 
-    await api.getMonthlyRevenue().then(monthlyRev => {
+    await api.getMonthlyData().then(monthlyData => {
         this.setState({
-          monthlyRev: monthlyRev.data.data,
+          monthlyData: monthlyData.data.data,
           //  isLoading: false,
         })
-        //console.log("COMPONENT DID MOUNT")
-        //console.log(monthlyRev.data.data)
     })
 
     await api.getInfoBoxes().then(infoBoxesData => {
@@ -38,11 +36,9 @@ class Dashboard extends React.Component {
         infoBoxesData: infoBoxesData.data.data,
         //isLoading: false,
       })
-      //console.log("COMPONENT DID MOUNT")
-      //console.log(monthlyRev.data.data)
     })
 
-    if(this.state.monthlyRev.length != 0 && this.state.infoBoxesData.length !=0){
+    if(this.state.monthlyData.length != 0 && this.state.infoBoxesData.length !=0){
       this.setState({
         isLoading: false
       })
@@ -80,8 +76,8 @@ class Dashboard extends React.Component {
           <InfoBoxes /><br/>
         </Row><br />
         <Row>
-          <Col><Graph_1/></Col>
-          <Col><Graph_2 data={this.state.monthlyRev}/></Col>
+          <Col><Graph_1 data={this.state.monthlyData}/></Col>
+          <Col><Graph_2 data={this.state.monthlyData}/></Col>
         </Row><br />
         <Row>
           <Col><Graph_3/></Col>

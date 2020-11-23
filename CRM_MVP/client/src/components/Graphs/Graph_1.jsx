@@ -39,10 +39,10 @@ const Graph_1 = props => {
       <div style={{ ...styles.header }}>New Orders</div>
       <div style={styles.div}>
         <ResponsiveContainer>
-          <LineChart data={data}>
+          <LineChart data={props.data}>
             <Line
               type="monotone"
-              dataKey="pv"
+              dataKey="TotalSoldItems"
               stroke="#8884d8"
               strokeWidth={2}
             />

@@ -328,7 +328,7 @@ getInfoBoxes = async (req, res) => {
 
 /**********************   REVENUE BY MONTH ( GRAPH )   **************************/
 
-getMonthlyRevenue= async (req, res) => {
+getMonthlyData= async (req, res) => {
     await Transaction.find({}, (err, transactions) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
@@ -351,14 +351,16 @@ getMonthlyRevenue= async (req, res) => {
            YearMonth: Number(String(transaction.Date.getUTCFullYear()) + niceMonth(transaction.Date)),
            //Hour: (transaction.Date.getUTCHours()), 
            //Minute: (transaction.Date.getUTCMinutes()), 
-           Revenue: transaction.TotalRevenue
+           Revenue: transaction.TotalRevenue,
+           Items: transaction.TotalItems
         })).value()
 
         const montly_rev =  _2(date_rev)
         .groupBy('YearMonth')
         .map((transaction, id) => ({
             YearMonth: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.YearMonth; }))[0],
-            TotalRevenue: sumBy(transaction, "Revenue")           
+            TotalRevenue: sumBy(transaction, "Revenue"),
+            TotalSoldItems: sumBy(transaction, "Items")           
         })).value() 
 
         return res.status(200).json({ success: true, data: montly_rev })
@@ -377,6 +379,6 @@ module.exports = {
     getOrders,
     getProducts,
     getInfoBoxes,
-    getMonthlyRevenue,
+    getMonthlyData,
     getMyDataset
 }
