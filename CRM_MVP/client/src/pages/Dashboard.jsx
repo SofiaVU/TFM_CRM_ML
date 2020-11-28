@@ -73,14 +73,11 @@ class Dashboard extends React.Component {
           <InfoBoxes data={this.state.infoBoxesData}/><br/>
         </Row><br />
         <Row>
-          <InfoBoxes /><br/>
-        </Row><br />
-        <Row>
           <Col><Graph_1 data={this.state.monthlyData}/></Col>
           <Col><Graph_2 data={this.state.monthlyData}/></Col>
         </Row><br />
         <Row>
-          <Col><Graph_3/></Col>
+          <Col><Graph_3 data={this.state.monthlyData}/></Col>
           <Col><Graph_4/></Col>
         </Row>
       </Container>

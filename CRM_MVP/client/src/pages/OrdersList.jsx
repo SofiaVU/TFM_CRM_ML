@@ -70,7 +70,9 @@ class OrdersList extends Component {
             },
             {
                 Header: 'Date',
-                accessor: 'Date',
+                //accessor: 'Date',
+                id: 'id',
+                accessor: row => row.['Date'].split("T")[0],
                 filterable: true,
             },
             {

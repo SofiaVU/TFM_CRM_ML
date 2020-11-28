@@ -25,18 +25,18 @@ const Graph_1 = props => {
   };
 
 
-  const data = [
+  /*const data = [
     {name: 'Page A', uv: 400, pv: 400, amt: 2400},
     {name: 'Page B', uv: 300, pv: 2000, amt: 2000},
     {name: 'Page C', uv: 200, pv: 300, amt: 2400},
     {name: 'Page D', uv: 100, pv: 2000, amt: 2000},
     {name: 'Page E', uv: 50, pv: 100, amt: 2400},
     {name: 'Page F', uv: 0, pv: 2000, amt: 2000}
-  ]; // data={props.data}
+  ]; */// data={props.data}
 
   return (
     <Paper style={styles.paper}>
-      <div style={{ ...styles.header }}>New Orders</div>
+      <div style={{ ...styles.header }}>Sold Items Evolution</div>
       <div style={styles.div}>
         <ResponsiveContainer>
           <LineChart data={props.data}>

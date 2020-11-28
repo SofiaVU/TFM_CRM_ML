@@ -91,7 +91,7 @@ class ProductList extends Component {
 
         return (
             <Wrapper>
-               <h2>products ({groupedProducts.length})</h2><br/>
+               <h2>Products ({groupedProducts.length})</h2><br/>
                 {showTable && (
                     <ReactTable
                         data={groupedProducts}

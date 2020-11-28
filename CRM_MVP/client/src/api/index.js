@@ -14,6 +14,7 @@ export const getAllOrders = () => api.get(`/orders`)
 export const getAllProducts = () => api.get(`/products`)
 export const getInfoBoxes = () => api.get(`/infoBoxes`)
 export const getMonthlyData = () => api.get(`/monthlyData`)
+export const getProductOverAlls = () => api.get(`/productOverAlls`)
 //export const getAllMyDataset = () => api.get(`/dataset`)
 
 const apis = {
@@ -26,7 +27,8 @@ const apis = {
     getAllProducts,
     getAllCustomers,
     getInfoBoxes,
-    getMonthlyData
+    getMonthlyData,
+    getProductOverAlls
     //getMyDataset
 
 }

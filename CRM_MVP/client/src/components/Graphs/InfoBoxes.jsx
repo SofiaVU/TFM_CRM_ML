@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Container, Row, Toast} from "react-bootstrap";
+import {Col, Container, Row, Toast, Card} from "react-bootstrap";
 import {IconContext} from "react-icons";
 import {MdFace,MdAttachMoney,MdShoppingCart,MdShowChart} from "react-icons/md";
 import api from '../../api'
@@ -22,7 +22,7 @@ class InfoBoxes extends React.Component {
 
     return (
       <Container fluid>        
-        <Row>
+        <Card><Card.Header as="h5">Total over the Time</Card.Header><Card.Body><Row>
           <Col>
             <Toast><Toast.Body>
               <Row>
@@ -35,7 +35,7 @@ class InfoBoxes extends React.Component {
                 </Col>
                 <Col>
                   <div style={{textAlign:'center'}}>
-                    <h4>Total Sales </h4>
+                    <h4>Sales </h4>
                     <h3>{this.props.data.TotalTransactions}</h3>
                   </div>
                 </Col>
@@ -55,7 +55,7 @@ class InfoBoxes extends React.Component {
                 </Col>
                 <Col>
                   <div style={{textAlign:'center'}}>
-                    <h4>Total Revenue </h4>
+                    <h4>Revenue </h4>
                     <h3>{niceRev}</h3>
                   </div>
                 </Col>
@@ -75,7 +75,7 @@ class InfoBoxes extends React.Component {
                 </Col>
                 <Col>
                   <div style={{textAlign:'center'}}>
-                    <h4>Total Sold Items </h4>
+                    <h4>Sold Items </h4>
                     <h3>{niceItems}</h3>
                   </div>
                 </Col>
@@ -95,7 +95,7 @@ class InfoBoxes extends React.Component {
                 </Col>
                 <Col>
                   <div style={{textAlign:'center'}}>
-                    <h4>Members </h4>
+                    <h4>Customers</h4>
                     <h3>{this.props.data.TotalCustomers}</h3>
                   </div>
                 </Col>
@@ -103,7 +103,7 @@ class InfoBoxes extends React.Component {
             </Toast.Body></Toast>
           </Col>
   
-        </Row>
+        </Row></Card.Body></Card>
       </Container>
   
     );

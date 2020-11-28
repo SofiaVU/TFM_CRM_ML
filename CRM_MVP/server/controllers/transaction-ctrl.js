@@ -223,6 +223,22 @@ getProducts = async (req, res) => {
         }
 
        const products = clean_data(transactions)
+       //  GROUP BY IS DONE AT FRONT END --> Use the above to do it in BACKEND
+       /*
+       const clean_transactions = clean_data(transactions)
+       
+       const productJSON = _2(clean_transactions) 
+       .map((transaction, id) => {
+           return JSON.parse(transaction.Products[0])
+       }).value()
+
+      const aux = _2.groupBy(productJSON,  'StockCode');
+      const groupedProducts = _2.map(aux,(product, id) => ({
+          StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; }))[0],
+          Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; }))[0],
+          UnitPrice: Object.keys(_2.groupBy(product, function(product) { return product.UnitPrice; }))[0] 
+        }))
+      ;*/
 
         return res.status(200).json({ success: true, data: products })
     }).catch(err => console.log(err))
@@ -326,7 +342,7 @@ getInfoBoxes = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
-/**********************   REVENUE BY MONTH ( GRAPH )   **************************/
+/**********************   REVENUE BY MONTH ( GRAPH 1,2,3 )   **************************/
 
 getMonthlyData= async (req, res) => {
     await Transaction.find({}, (err, transactions) => {
@@ -359,11 +375,48 @@ getMonthlyData= async (req, res) => {
         .groupBy('YearMonth')
         .map((transaction, id) => ({
             YearMonth: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.YearMonth; }))[0],
+            Month: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Month; }))[0],
+            Year: Object.keys(_2.groupBy(transaction, function(transaction) { return transaction.Year; }))[0],
+            NiceYearMonth: Object.keys(_2.groupBy(transaction, function(transaction) { return (transaction.Year + "-").concat(niceMonth(transaction.Date)); }))[0],
             TotalRevenue: sumBy(transaction, "Revenue"),
             TotalSoldItems: sumBy(transaction, "Items")           
         })).value() 
 
         return res.status(200).json({ success: true, data: montly_rev })
+    }).catch(err => console.log(err))
+}
+
+/**********************   TOP SOLD PRODUCTS( GRAPH 4 )   **************************/
+
+getProductOverAlls= async (req, res) => {
+    await Transaction.find({}, (err, transactions) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!transactions.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transactions not found` })
+        }
+
+       const clean_transactions = clean_data(transactions)
+       
+       const productJSON = _2(clean_transactions) 
+       .map((transaction, id) => {
+           return JSON.parse(transaction.Products[0])
+       }).value()
+
+      const aux = _2(productJSON)
+      .groupBy('StockCode')
+      .map((product, id) => ({
+          StockCode: Object.keys(_2.groupBy(product, function(product) { return product.StockCode; }))[0],
+          Description: Object.keys(_2.groupBy(product, function(product) { return product.Description; }))[0],
+          UnitPrice: Object.keys(_2.groupBy(product, function(product) { return product.UnitPrice; }))[0] 
+        }))
+      ;
+        
+
+        return res.status(200).json({ success: true, data: aux })
     }).catch(err => console.log(err))
 }
 
@@ -380,5 +433,6 @@ module.exports = {
     getProducts,
     getInfoBoxes,
     getMonthlyData,
+    getProductOverAlls,
     getMyDataset
 }
