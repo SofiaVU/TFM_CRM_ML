@@ -15,12 +15,16 @@ function convert(str) {
 
 function clean_data(transactions){
     /*** Clean dataset ***/
-    const aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
+    /* const aux = _2.reject(transactions, function(o) { return o.Country.match('[0-9]'); })
     const aux2 = _2.reject(aux, function(o) { return o.Country==''; })
     const aux3 = _2.reject(aux2, function(o) { return o.CustomerID==''; })
     const aux4 = _2.reject(aux3, function(o) { return o.InvoiceNo== undefined; })
     const aux5= _2.reject(aux4, function(o) { return o.Date== undefined; })
-    const clean_transactions = _2.reject(aux5, function(o) { return o.Name==''; })
+    const clean_transactions = _2.reject(aux5, function(o) { return o.Name==''; }) */
+
+    // Eliminamos las trasacciones sin CustomerID
+    const aux = _2.reject(transactions, function(o) { return o.CustomerID==''; })
+    const clean_transactions = _2.reject(aux, function(o) { return o.Name==''; })
 
     return clean_transactions
 }
