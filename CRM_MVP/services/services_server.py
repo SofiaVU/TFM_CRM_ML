@@ -14,7 +14,7 @@ model_linReg = pickle.load(open('ltv_linReg_model.pkl','rb'))
 
 
 ####################################################################
-######   HELLOW WORLD CALL  (To Check APU & Server are UP)   #######
+######   HELLOW WORLD CALL  (To Check API & Server are UP)   #######
 ####################################################################
 @app.route('/helloWorld')
 def hello_world():
