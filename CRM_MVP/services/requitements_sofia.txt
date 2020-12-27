@@ -1,0 +1,32 @@
+attrs==20.3.0
+click==7.1.2
+Flask==1.1.2
+importlib-metadata==3.3.0
+iniconfig==1.1.1
+itsdangerous==1.1.0
+Jinja2==2.11.2
+joblib==1.0.0
+MarkupSafe==1.1.1
+numpy==1.19.4
+packaging==20.8
+pandas==1.1.5
+pip==20.3.3
+pluggy==0.13.1
+py== 1.10.0
+pyparsing== 2.4.7
+pytest==6.2.1
+python-dateutil==2.8.1
+python-dotenv==0.15.0
+pytz== 2020.4
+scikit-learn==0.22
+scipy==1.5.4
+setuptools==40.8.0
+six== 1.15.0
+sklearn==0.0
+sklearn-dummies==0.3
+threadpoolctl==2.1.0
+toml==0.10.2
+typing-extensions==3.7.4.3
+Werkzeug==0.15.2
+xgboost== 0.90
+zipp==3.4.0
