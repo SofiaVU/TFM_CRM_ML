@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import ReactTable from 'react-table-6'
 import api from '../api'
 
-var _ = require('lodash')
 
 import styled from 'styled-components'
 
 import 'react-table-6/react-table.css'
 
+var _ = require('lodash')
 /**  STYLES  **/
 const Wrapper = styled.div`
     padding: 0 0px 0px 0px;

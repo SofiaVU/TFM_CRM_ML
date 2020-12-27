@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://10.154.0.3:3000/api',
 })
 
 export const insertTransaction = payload => api.post(`/transaction`, payload)

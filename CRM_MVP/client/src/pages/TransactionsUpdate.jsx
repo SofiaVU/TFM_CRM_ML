@@ -178,7 +178,7 @@ class TransactionsUpdate extends Component {
                 rating: '',
                 time: '',
             })
-            event.preventDefault()
+           // event.preventDefault()
             window.location.href = `/transactions/list`
         })
     }
