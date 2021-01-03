@@ -1,8 +1,6 @@
 import React, { PropTypes } from "react";
 import Paper from '@material-ui/core/Paper';
-//import { white, pink600, pink500 } from "@material-ui/core/styles/colors";
 import { BarChart, Bar, ResponsiveContainer, XAxis } from "recharts";
-//import GlobalStyles from "../../styles";
 
 // Rojo-Rosa(ce1c58)
 const Graph_2 = props => {
@@ -43,14 +41,16 @@ const Graph_2 = props => {
     }
   }
 
-  const data = [
+  //const data2= getData()
+
+  /*const data = [
     {name: 'Page A', uv: 400, pv: 400, amt: 2400},
     {name: 'Page B', uv: 300, pv: 2000, amt: 2000},
     {name: 'Page C', uv: 200, pv: 300, amt: 2400},
     {name: 'Page D', uv: 100, pv: 2000, amt: 2000},
     {name: 'Page E', uv: 50, pv: 100, amt: 2400},
     {name: 'Page F', uv: 0, pv: 2000, amt: 2000}
-  ]; // data={props.data}
+  ]; */ // data={props.data}
 
   return (
     <Paper style={styles.paper}>
@@ -59,14 +59,15 @@ const Graph_2 = props => {
       </div>
       <div style={styles.div}>
         <ResponsiveContainer>
-          <BarChart data={data}>
-            <Bar dataKey="uv" fill={'#975DCE'} />
-            <XAxis dataKey="name" stroke="none" tick={{ fill: '#ffff' }} />
+          <BarChart data={props.data}>
+            <Bar dataKey="TotalRevenue" fill={'#975DCE'} />
+            <XAxis dataKey="NiceYearMonth" stroke="none" tick={{ fill: '#ffff' }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
     </Paper>
   );
+
 };
 
 /* MonthlySales.propTypes = {

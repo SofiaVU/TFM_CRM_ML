@@ -1,92 +1,118 @@
-import React, {Component} from 'react';
-import pepe from "../assets/pepe.jpg";
-import {Jumbotron, Table} from "react-bootstrap";
-import CustomerItem from "./../components/CustomerItem";
-import axios from 'axios'; // CALLS to API
+import React, { Component } from 'react'
+import ReactTable from 'react-table-6'
+import api from '../api'
 
+import styled from 'styled-components'
+
+import 'react-table-6/react-table.css'
+
+import {Image} from "react-bootstrap";
+import edit from './../assets/icons/edit3.png'; 
+import pepe from './../assets/pepe.jpg'; 
+
+/**  STYLES  **/
+const Wrapper = styled.div`
+    padding: 0 0px 0px 0px;
+`
+const Update = styled.div`
+    color: #ef9b0f;
+    cursor: pointer;
+`
+
+const Delete = styled.div`
+    color: #ff0000;
+    cursor: pointer;
+`
+
+/*******************************
+         CLASS LIST 
+********************************/
 
 class CustomerList extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            customers: [],
+            columns: [],
+            isLoading: false,
+        }
+    }
 
-  // CONSTRUCTOR -> STATE DECLARATION
-  constructor(props){
-    super(props);
-    this.state = {
-      customers: []
-    };
-  }
+    componentDidMount = async () => {
+        this.setState({ isLoading: true })
 
-  // // COMPONENT DID MOUNT
-  //componentDidMount
-  componentDidMount = () => {
-    //http://localhost:3000/api/customers
-    axios.get('http://localhost:3000/api/customers').then((res) => {
-      this.setState({customers: res.data});
-      console.log("ComponentDidMount API call at customerList");
-      console.log(this.state.customers);
-    }).catch ((err) => {
-      console.log(err);
-    });
-  }
+        await api.getAllCustomers().then(customers => {
+            this.setState({
+                customers: customers.data.data,
+                isLoading: false,
+            })
+        })
+    }
 
-  render(){
-    let customerList = [];
-    console.log("TRAZA 2")
-    console.log(this.state.customers)
-    console.log(this.state.customers.data)
-    //if(this.state.customers.data) {console.log(Object.keys(this.state.customers.data).length)}
-    if(this.state.customers.data) {
-      customerList = Object.keys(this.state.customers.data).map((customer, index) => {
-        console.log(customer.split(',')[0])
+    render() {
+        const { customers, isLoading } = this.state
+        console.log('TCL: CustomerList -> render -> customers', customers)
+
+        const columns = [
+
+            {
+                Header: 'Name',
+                accessor: 'Name',
+                filterable: true,
+            },
+            {
+                Header: 'First Name',
+                id: 'id',
+                accessor: row => row.['Name'].split(" ")[0],
+                filterable: true,
+            },
+            {
+                Header: 'Last Name',
+                id: 'id',
+                accessor: row => row.['Name'].split(" ")[1],
+                filterable: true,
+            },
+            /*{
+                Header: 'Name',
+                accessor: row => return (<Image className="ui small rounded image" alt="pepe" src={pepe} height="42" width="42" rounded />) ,
+                filterable: true,
+            },*/
+            {
+                Header: 'Customer ID',
+                accessor: 'CustomerID',
+                filterable: true,
+            },
+            {
+                Header: 'Country',
+                accessor: 'Country',
+                filterable: true,
+                style: { 'whiteSpace': 'unset' } 
+            },
+           
+        ]
+
+        let showTable = true
+        if (!customers.length) {
+            showTable = false
+        }
+
         return (
-          //console.log(customer.split(',')[0]) 
-          //console.log(customer)
-          <CustomerItem key={index} customer={customer} />
-        );
-       });
+            <Wrapper>
+               <h2>Customers ({customers.length})</h2><br/>
+                {showTable && (
+                    <ReactTable
+                        data={customers}
+                        columns={columns}
+                        loading={isLoading}
+                        defaultPageSize={10}
+                        showPageSizeOptions={true}
+                        minRows={0}
+                        style={{textAlign: "center" }}
+                    />
+                )}
+            </Wrapper>
+        )
     }
+}
 
-    /*customerList = (this.state.customers).map((customer, index) => {
-      return (
-        <CustomerItem key={index}
-                      customer={customer}
-                      firstName={customer.firstName[index]}
-                      lastName={customer.lastName[index]}
-                      memberId={customer.id[index]}
-                      avatar={pepe}
-        />
-       );
-     });*/
-
-    //if(this.state.customers === null || this.state.customers === undefined) {
-    if(!this.state.customers.data) {
-      return(<h1>Cargando . . . </h1>);
-    }
-    else{
-      return (
-        //<h2>Customers ({this.state.customers.length})</h2><br/>
-        <Jumbotron style={{backgroundColor:'#fff', width:'90%', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px'}}>
-          <h2>Customers ({Object.keys(this.state.customers.data).length})</h2><br/>
-          <Table responsive style={{textAlign: 'center'}}>
-            <thead>
-            <tr>
-              <th>Avatar</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Country</th>
-              <th>Customer ID</th>
-              <th>Edit</th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {customerList}
-            </tbody>
-          </Table>
-        </Jumbotron>
-      );
-    }
-  }
-};
-export default CustomerList;
-//<th>Rewards</th>
-//<th>Membership</th>
+export default CustomerList

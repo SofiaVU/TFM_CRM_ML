@@ -12,7 +12,12 @@ router.get('/transactions', TransactionCtrl.getTransactions)
 router.get('/customers', TransactionCtrl.getCustomers)
 router.get('/orders', TransactionCtrl.getOrders)
 router.get('/products', TransactionCtrl.getProducts)
+router.get('/infoBoxes', TransactionCtrl.getInfoBoxes)
+router.get('/monthlyData', TransactionCtrl.getMonthlyData)
+router.get('/productOverAlls', TransactionCtrl.getProductOverAlls)
+
 router.get('/dataset', TransactionCtrl.getMyDataset)
+
 
 
 

@@ -64,13 +64,13 @@ class SideBar extends Component {
 	              	<NavItem eventKey="dashboard">
 	                  <NavIcon>
 	                    <IconContext.Provider value={{size:"2em"}}>
-	                     	<Link to="/dashboard">
+	                     	<Link to="/">
 	                      		<GoGraph />
 	                      	</Link>
 	                    </IconContext.Provider>
 	                  </NavIcon>
 	                  <NavText>
-	                    <Link to="/dashboard">
+	                    <Link to="/">
 	                    	Dashboard
 	                    </Link>
 	                  </NavText>
@@ -87,21 +87,6 @@ class SideBar extends Component {
 	                  <NavText>
 	                    <Link to="/customers/list">
 	                    	Custoemrs
-	                    </Link>
-	                  </NavText>
-	                </NavItem>
-
-	                <NavItem eventKey="transactions/list">
-	                  <NavIcon>
-	                    <IconContext.Provider value={{size:"2em"}}>
-	                     	<Link to="/transactions/list">
-	                      		<GoDatabase />
-	                      	</Link>
-	                    </IconContext.Provider>
-	                  </NavIcon>
-	                  <NavText>
-	                    <Link to="/transactions/list">
-	                    	Database
 	                    </Link>
 	                  </NavText>
 	                </NavItem>
@@ -155,9 +140,8 @@ class SideBar extends Component {
 	            </SideNav>
 	            <main style={this.state.style} >
 		            <Switch>
-		                <Route path="/dashboard" exact component={Dashboard} />
-		                <Route path="/customers/list" exact component={CustomerList} />
-		                <Route path="/transactions/list" exact component={TransactionsList} />		                
+		                <Route path="/" exact component={Dashboard} />
+		                <Route path="/customers/list" exact component={CustomerList} />		                
 		                <Route path="/orders/list" exact component={OrdersList} />
 		                <Route path="/product/list" exact component={ProductList} />
 		                <Route path="/transactions/create" exact component={TransactionsInsert} />

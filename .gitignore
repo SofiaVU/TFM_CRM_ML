@@ -1,4 +1,11 @@
 CRM_MVP/node_modules
+CRM_MVP/services/old_model
+CRM_MVP/services/request.py
+CRM_MVP/services/StepsFollowed.txt
+CRM_MVP/services/venv
+
+Data
+
 LTV_OpenSource/.ipynb_checkpoints
 LTV_OpenSource/OnlineRetail.xlsx
 LTV_OpenSource/FinalDataset.csv
@@ -7,3 +14,9 @@ LTV_OpenSource/CustomerId-Names_Mapping.csv
 LTV_OpenSource/CustomerId-Names_Mapping_2.csv
 LTV_OpenSource/DataSet_Mapping.ipynb
 LTV_OpenSource/cutomerIds.csv
+LTV_OpenSource
+LTV_OpenSource/EN-unfinished
+LTV_OpenSource/modelos_pkl_old
+LTV_OpenSource/CutomerIDs_mapping_name
+LTV_OpenSource/delete
+

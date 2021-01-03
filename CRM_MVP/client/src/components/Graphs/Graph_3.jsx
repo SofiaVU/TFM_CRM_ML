@@ -108,20 +108,20 @@ const Graph_3 = props => {
             <BarChart
               width={500}
               height={300}
-              data={data}
+              data={props.data}
               margin={{
                 top: 5, right: 30, left: 20, bottom: 5,
               }}
               fluid
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" tickFormatter={monthTickFormatter} />
-              <XAxis dataKey="date" axisLine={false} tickLine={false} interval={0} tick={renderQuarterTick} height={1} scale="band" xAxisId="quarter" />
+              <XAxis dataKey="NiceYearMonth" tickFormatter={monthTickFormatter} />
+              <XAxis dataKey="NiceYearMonth" axisLine={false} tickLine={false} interval={0} tick={renderQuarterTick} height={1} scale="band" xAxisId="quarter" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
+              <Bar dataKey="TotalRevenue" fill="#8884d8" />
+              <Bar dataKey="TotalSoldItems" fill="#82ca9d" />
             </BarChart>
           </div>
         </div>
