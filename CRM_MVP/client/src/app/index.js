@@ -1,31 +1,38 @@
-//import React from 'react'
-import React, { Component } from 'react';
+import React from 'react';
 
-import { NavBar, SideBar } from '../components'
-import { TransactionsList, TransactionsInsert, TransactionsUpdate } from '../pages'
-
+// React Components
+import {SideBar } from '../components'
+import { TransactionsInsert, TransactionsUpdate, Dashboard, CustomerList, OrdersList, ProductList } from '../pages'
 
 // STYLE: BOOTSTRAP & CSS
-import { GoGraph,GoListUnordered,GoTag,GoPerson,GoOrganization } from "react-icons/go";
-import { IconContext } from "react-icons";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-// SIDE BAR
+// React-Router - web paging 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import CustomerDetails from '../pages/CustomerDetails';
 
 
-/********************************************************************************************************/
+const divStyle = {
+    marginLeft: '100rem',
+    backgroundColor: 'blue'
+  };
 
 
-// MER APP NAVBAR
 function App() {
     return (
         <Router>
-            <SideBar />            
+            <SideBar /> 
+            <Switch style={divStyle}>
+                <Route path="/" exact component={Dashboard} />
+                <Route path="/customers/list" exact component={CustomerList} />
+                <Route path="/orders/list" exact component={OrdersList} />
+                <Route path="/product/list" exact component={ProductList} />
+                <Route path="/transactions/create" exact component={TransactionsInsert} />
+                <Route path="/transactions/update/:id" exact component={TransactionsUpdate} />
+                <Route path="/transactions/customerDetails" exact component={CustomerDetails} />
+            </Switch>           
         </Router>
     )
 }
-
-
 export default App;
 

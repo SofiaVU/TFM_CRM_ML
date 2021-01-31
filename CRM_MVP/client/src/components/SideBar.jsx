@@ -2,22 +2,18 @@ import React, { Component } from 'react'
 
 // STYLE: BOOTSTRAP & CSS
 import { IconContext } from "react-icons";
-import { GoGraph,GoListUnordered,GoTag,GoPerson,GoOrganization, GoDiffAdded, GoDatabase } from "react-icons/go";
+import { GoGraph,GoListUnordered,GoOrganization, GoDiffAdded, GoInfo} from "react-icons/go";
 import { GiPresent } from "react-icons/gi";
-//import { GrTransaction } from "react-icons/gr";
-
+import {Container} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // SIDE BAR
 import { Link } from 'react-router-dom'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import SideNav, {NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';// not used: Toggle, Nav,
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
-import {Container, Row, Col, Card, Form, Button } from "react-bootstrap";
-
-import { TransactionsList, TransactionsInsert, TransactionsUpdate, Dashboard, CustomerList, OrdersList, ProductList } from '../pages'
-
+const sidenabCSS ={
+	position: '-webkit-sticky', position: 'sticky', top: '0', };
 
 class SideBar extends Component {
 
@@ -26,7 +22,7 @@ class SideBar extends Component {
         this.state = {
           //customer: [],
           navExpanded: false,
-          style: {paddingTop:'50px', marginLeft:'-100px', marginRight:'-100px'}
+		  style: {paddingTop:'50px', marginLeft:'-100px', marginRight:'-100px',  zIndex: '99999'}
           //style: {paddingLeft:'0px', paddingRight:'0px', paddingTop:'50px'}
 
         };
@@ -45,13 +41,13 @@ class SideBar extends Component {
 	                  if (this.state.navExpanded === false){
 	                    this.setState({
 	                      navExpanded: true,
-	                      style: {paddingLeft:'0px', paddingRight:'0px', paddingTop:'50px'}
+	                      style: {paddingLeft:'0px', paddingRight:'0px', paddingTop:'50px',  zIndex: '99999'}
 	                    });
 	                  }
 	                  if (this.state.navExpanded === true){
 	                    this.setState({
 	                      navExpanded: false,
-	                      style: {paddingLeft:'0px', paddingRight:'0px', paddingTop:'50px'}
+	                      style: {paddingLeft:'0px', paddingRight:'0px', paddingTop:'50px',  zIndex: '99999'}
 	                    });
 	                  }
 	                  console.log(this.state.style)
@@ -86,7 +82,7 @@ class SideBar extends Component {
 	                  </NavIcon>
 	                  <NavText>
 	                    <Link to="/customers/list">
-	                    	Custoemrs
+	                    	Customers
 	                    </Link>
 	                  </NavText>
 	                </NavItem>
@@ -136,22 +132,23 @@ class SideBar extends Component {
 	                  </NavText>
 	                </NavItem>
 
+					<NavItem eventKey="transactions/customerDetails">
+	                  <NavIcon>
+	                    <IconContext.Provider value={{size:"2em"}}>
+	                     	<Link to="/transactions/customerDetails">
+	                      		<GoInfo />
+	                      	</Link>
+	                    </IconContext.Provider>
+	                  </NavIcon>
+	                  <NavText>
+	                    <Link to="/transactions/customerDetails">
+	                    	Customer Details
+	                    </Link>
+	                  </NavText>
+	                </NavItem>
+
 	              </SideNav.Nav>
 	            </SideNav>
-	            <main style={this.state.style} >
-		            <Switch>
-		                <Route path="/" exact component={Dashboard} />
-		                <Route path="/customers/list" exact component={CustomerList} />		                
-		                <Route path="/orders/list" exact component={OrdersList} />
-		                <Route path="/product/list" exact component={ProductList} />
-		                <Route path="/transactions/create" exact component={TransactionsInsert} />
-		                <Route
-		                    path="/transactions/update/:id"
-		                    exact
-		                    component={TransactionsUpdate}
-		                />
-		            </Switch>
-	            </main>
             </Container>
         )
     }

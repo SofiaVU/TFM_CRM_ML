@@ -34,6 +34,11 @@ const CancelButton = styled.a.attrs({
 })`
     margin: 15px 15px 15px 5px;
 `
+const divStyle = {
+    marginLeft: '5%',
+    marginTop: '2%',
+    width: '90%',
+  };
 
 class TransactionsUpdate extends Component {
     constructor(props) {
@@ -57,19 +62,24 @@ class TransactionsUpdate extends Component {
         this.setState({ InvoiceNo })
     }
 
-    handleChangeStockCode = async event => {
-        const StockCode = event.target.value
-        this.setState({ StockCode })
+    handleChangeCustomerID = async event => {
+        const CustomerID = event.target.value
+        this.setState({ CustomerID })
     }
 
-    handleChangeDescription = async event => {
-        const Description = event.target.value
-        this.setState({ Description })
+    handleChangeName = async event => {
+        const Name = event.target.value
+        this.setState({ Name })
     }
 
-    handleChangeDescription = async event => {
-        const Description = event.target.value
-        this.setState({ Description })
+    handleChangeCountry = async event => {
+        const Country = event.target.value
+        this.setState({ Country })
+    }
+
+    handleChangeDate = async event => {
+        const Date = event.target.value
+        this.setState({ Date })
     }
 
     handleChangeQuantity = async event => {
@@ -80,33 +90,25 @@ class TransactionsUpdate extends Component {
         this.setState({ Quantity })
     }
 
-    handleChangeInvoiceDate = async event => {
-        const InvoiceDate = event.target.value
-        this.setState({ InvoiceDate })
-    }
-
-    handleChangeUnitPrice = async event => {
-        const UnitPrice = event.target.validity.valid
+    handleChangeTotalItems = async event => {
+        const TotalItems = event.target.validity.valid
             ? event.target.value
-            : this.state.UnitPrice
+            : this.state.TotalItems
 
-        this.setState({ UnitPrice })
+        this.setState({ TotalItems })
     }
 
-    handleChangeInvoiceDate = async event => {
-        const InvoiceDate = event.target.value
-        this.setState({ InvoiceDate })
+    handleChangeTotalRevenue = async event => {
+        const TotalRevenue = event.target.validity.valid
+            ? event.target.value
+            : this.state.TotalRevenue
+
+        this.setState({ TotalRevenue })
     }
 
-
-    handleChangeCustomerID = async event => {
-        const CustomerID = event.target.value
-        this.setState({ CustomerID })
-    }
-
-    handleChangeCountry = async event => {
-        const Country = event.target.value
-        this.setState({ Country })
+    handleChangeProducts = async event => {
+        const Products = event.target.value
+        this.setState({ Products })
     }
 
     /*
@@ -150,68 +152,68 @@ class TransactionsUpdate extends Component {
     */
     handleUpdateTransaction = async () => {
         const { 
-            InvoiceNo, 
-            StockCode, 
-            Description, 
-            Quantity, 
-            InvoiceDate, 
-            UnitPrice, 
-            CustomerID, 
-            Country
+            InvoiceNo,
+			CustomerID,
+			Name,
+            Country,
+            Date,
+			TotalItems,
+            TotalRevenue,
+            Products
         } = this.state
 
         const payload = { 
-            InvoiceNo, 
-            StockCode, 
-            Description, 
-            Quantity, 
-            InvoiceDate, 
-            UnitPrice, 
-            CustomerID, 
-            Country 
+            InvoiceNo,
+			CustomerID,
+			Name,
+            Country,
+            Date,
+			TotalItems,
+            TotalRevenue,
+            Products
         }
 
-        await api.updateTransactionById(this.state.id, payload).then(res => {
+        await api.updateTransactionByInvoiceNo(this.state.id, payload).then(res => {
             window.alert(`Transaction updated successfully`)
             this.setState({
                 name: '',
                 rating: '',
                 time: '',
             })
-            event.preventDefault()
+            //event.preventDefault()
             window.location.href = `/transactions/list`
         })
     }
 
     componentDidMount = async () => {
         const { id } = this.state
-        const transaction = await api.getTransactionById(id)
+        const transaction = await api.getTransactionByInvoiceNo(id)
 
         this.setState({
-            InvoiceNo:   transaction.data.data.InvoiceNo,
-			StockCode:   transaction.data.data.StockCode,
-			Description: transaction.data.data.Description,
-			Quantity:    transaction.data.data.Quantity ,
-			InvoiceDate: transaction.data.data.InvoiceDate,
-			UnitPrice:   transaction.data.data.UnitPrice ,
-			CustomerID:  transaction.data.data.CustomerID ,
-			Country:     transaction.data.data.Country,
+            InvoiceNo:     transaction.data.data.InvoiceNo,
+			CustomerID:    transaction.data.data.CustomerID,
+			Name:          transaction.data.data.Name,
+            Country:       transaction.data.data.Country ,
+            Date:          transaction.data.data.Date ,
+			TotalItems:    transaction.data.data.TotalItems,
+            TotalRevenue:  transaction.data.data.TotalRevenue ,
+            Products:      transaction.data.data.Products ,
         })
     }
 
     render() {
         const { 
-        	InvoiceNo, 
-        	StockCode, 
-        	Description, 
-        	Quantity, 
-        	InvoiceDate, 
-        	UnitPrice, 
-        	CustomerID, 
-        	Country
+        	InvoiceNo,
+			CustomerID,
+			Name,
+            Country,
+            Date,
+			TotalItems,
+            TotalRevenue,
+            Products
         } = this.state
         return (
-            <Wrapper>
+            <Wrapper style={divStyle}>
                 <Title>Create New Transaction</Title>
 
                 <Label>InvoiceNo: </Label>
@@ -221,49 +223,7 @@ class TransactionsUpdate extends Component {
                     value={InvoiceNo}
                     onChange={this.handleChangeInvoiceNo}
                 />
-                <Label>StockCode: </Label>
-                <InputText
-                    type="number"
-                    pattern="[0-9]+([,\.][0-9]+)?"
-                    value={StockCode}
-                    onChange={this.handleChangeStockCode}
-                />
-
-                <Label>Description: </Label>
-                <InputText
-                    type="text"
-                    lang="en-US"
-                    value={Description}
-                    onChange={this.handleChangeDescription}
-                />
-
-                <Label>Quantity: </Label>
-                <InputText
-                    type="number"
-                    pattern="[0-9]+([,\.][0-9]+)?"
-                    step="1"
-                    lang="en-US"
-                    min="0"
-                    max="10"
-                    value={Quantity}
-                    onChange={this.handleChangeQuantity}
-                />
-
-                <Label>InvoiceDate: </Label>
-                <InputText
-                    type="text"
-                    value={InvoiceDate}
-                    onChange={this.handleChangeInvoiceDate}
-                />
-
-                <Label>UnitPrice: </Label>
-                <InputText
-                    type="number"
-                    value={UnitPrice}
-                    onChange={this.handleChangeUnitPrice}
-                />
-
-                 <Label>CustomerID: </Label>
+                <Label>CustomerID: </Label>
                 <InputText
                     type="text"
                     step="0.1"
@@ -274,6 +234,14 @@ class TransactionsUpdate extends Component {
                     onChange={this.handleChangeCustomerID}
                 />
 
+                <Label>Name: </Label>
+                <InputText
+                    type="text"
+                    lang="en-US"
+                    value={Name}
+                    onChange={this.handleChangeName}
+                />
+
                 <Label>Country: </Label>
                 <InputText
                     type="text"
@@ -281,8 +249,41 @@ class TransactionsUpdate extends Component {
                     onChange={this.handleChangeCountry}
                 />
 
+                <Label>Date: </Label>
+                <InputText
+                    type="text"
+                    value={Date}
+                    onChange={this.handleChangeDate}
+                />
+
+                <Label>Total Items: </Label>
+                <InputText
+                    type="number"
+                    pattern="[0-9]+([,\.][0-9]+)?"
+                    step="1"
+                    lang="en-US"
+                    min="0"
+                    max="10"
+                    value={TotalItems}
+                    onChange={this.handleChangeTotalItems}
+                />
+
+                <Label>Total Revenue: </Label>
+                <InputText
+                    type="number"
+                    value={TotalRevenue}
+                    onChange={this.handleChangeTotalRevenue}
+                />
+
+                <Label>Products: </Label>
+                <InputText
+                    type="array"
+                    value={Products}
+                    onChange={this.handleChangeProducts}
+                />
+
                 <Button onClick={this.handleUpdateTransaction}>Update Transaction</Button>
-                <CancelButton href={'/transactions/list'}>Cancel</CancelButton>
+                <CancelButton href={'/orders/list'}>Cancel</CancelButton>
             </Wrapper>
         )
     }

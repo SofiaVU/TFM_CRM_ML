@@ -7,11 +7,11 @@ import pickle # To load our trained model to predict
 app = Flask(__name__)
 
 # Load the model
-model_xgb = pickle.load(open('ltv_xgb_model.pkl','rb'))
-model_linReg = pickle.load(open('ltv_linReg_model.pkl','rb'))
+model_xgb     = pickle.load(open('ltv_xgb_model.pkl','rb'))
+model_linReg  = pickle.load(open('ltv_linReg_model.pkl','rb'))
 
-#model = joblib.load('ltv_xgb_model.pkl') 
-
+#model_xgb = joblib.load('ltv_xgb_model.pkl') 
+#model_linReg = joblib.load('ltv_linReg_model.pkl') 
 
 ####################################################################
 ######   HELLOW WORLD CALL  (To Check API & Server are UP)   #######
@@ -37,7 +37,7 @@ def predict_xgb():
     # Take the first value of prediction
 	output_xgb = prediction_xgb[0]
 
-	return  str(output_xgb) #jsonify(output) # data
+	return  str(output_xgb) 
 
 ####################################################################
 ###  PREDIUCT REVENUE REVENUE NEXT 6 MONTHS (Linear Regression)   ##
@@ -56,7 +56,7 @@ def predict_linReg():
     # Take the first value of prediction
 	output_linReg = prediction_linReg[0]
 
-	return  str(output_linReg) #jsonify(output) # data
+	return  str(output_linReg)
 
 if __name__ == '__main__':
 	try:

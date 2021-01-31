@@ -6,10 +6,6 @@ import styled from 'styled-components'
 
 import 'react-table-6/react-table.css'
 
-import {Image} from "react-bootstrap";
-import edit from './../assets/icons/edit3.png'; 
-import pepe from './../assets/pepe.jpg'; 
-
 /**  STYLES  **/
 const Wrapper = styled.div`
     padding: 0 0px 0px 0px;
@@ -18,11 +14,16 @@ const Update = styled.div`
     color: #ef9b0f;
     cursor: pointer;
 `
-
 const Delete = styled.div`
     color: #ff0000;
     cursor: pointer;
 `
+
+const divStyle = {
+    marginLeft: '5%',
+    marginTop: '2%',
+    width: '90%',
+};
 
 /*******************************
          CLASS LIST 
@@ -62,21 +63,16 @@ class CustomerList extends Component {
             },
             {
                 Header: 'First Name',
-                id: 'id',
-                accessor: row => row.['Name'].split(" ")[0],
+                id: '0',
+                accessor: row => row.Name.split(" ")[0],
                 filterable: true,
             },
             {
                 Header: 'Last Name',
-                id: 'id',
-                accessor: row => row.['Name'].split(" ")[1],
+                id: '1',
+                accessor: row => row.Name.split(" ")[1],
                 filterable: true,
             },
-            /*{
-                Header: 'Name',
-                accessor: row => return (<Image className="ui small rounded image" alt="pepe" src={pepe} height="42" width="42" rounded />) ,
-                filterable: true,
-            },*/
             {
                 Header: 'Customer ID',
                 accessor: 'CustomerID',
@@ -97,7 +93,7 @@ class CustomerList extends Component {
         }
 
         return (
-            <Wrapper>
+            <Wrapper style={divStyle}>
                <h2>Customers ({customers.length})</h2><br/>
                 {showTable && (
                     <ReactTable

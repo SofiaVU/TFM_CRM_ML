@@ -10,6 +10,11 @@ import LinearChart from "../components/Graphs/LinearChart";
 
 import { Container, Row, Col, Spinner, Button} from "react-bootstrap";
 
+const divStyle = {
+  marginLeft: '5%',
+  marginTop: '2%',
+  width: '90%',
+};
 
 class Dashboard extends React.Component {
 
@@ -67,9 +72,9 @@ class Dashboard extends React.Component {
         </div>
       ); 
     }
+    // <h1>Dashboard Page</h1><br />
     return (
-      <Container fluid>
-        <h1>Dashboard Page</h1><br />
+      <Container fluid style={divStyle}>
         <Row>
           <InfoBoxes data={this.state.infoBoxesData}/><br/>
         </Row><br />

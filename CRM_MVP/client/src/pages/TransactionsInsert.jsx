@@ -36,6 +36,13 @@ const CancelButton = styled.a.attrs({
 })`
     margin: 15px 15px 15px 5px;
 `
+
+const divStyle = {
+    marginLeft: '5%',
+    marginTop: '2%',
+    width: '50%'
+}
+
 /*******************************
          CLASS INSERT 
 ********************************/
@@ -46,13 +53,13 @@ class TransactionsInsert extends Component {
 
         this.state = {
             InvoiceNo: null,
-		    StockCode: "",
-		    Description: "",
-		    Quantity: null ,
-		    InvoiceDate: "",
-		    UnitPrice: null ,
-		    CustomerID: null ,
-		    Country: ""
+		    CustomerID: "",
+		    Name: "",
+		    Country: "" ,
+		    Date: "",
+		    TotalItems: null ,
+		    TotalRevenue: null ,
+		    Products: []
         }
     }
 
@@ -61,51 +68,14 @@ class TransactionsInsert extends Component {
         this.setState({ InvoiceNo })
     }
 
-    handleChangeStockCode = async event => {
-        const StockCode = event.target.value
-        this.setState({ StockCode })
-    }
-
-    handleChangeDescription = async event => {
-        const Description = event.target.value
-        this.setState({ Description })
-    }
-
-    handleChangeDescription = async event => {
-        const Description = event.target.value
-        this.setState({ Description })
-    }
-
-    handleChangeQuantity = async event => {
-        const Quantity = event.target.validity.valid
-            ? event.target.value
-            : this.state.Quantity
-
-        this.setState({ Quantity })
-    }
-
-    handleChangeInvoiceDate = async event => {
-        const InvoiceDate = event.target.value
-        this.setState({ InvoiceDate })
-    }
-
-    handleChangeUnitPrice = async event => {
-        const UnitPrice = event.target.validity.valid
-            ? event.target.value
-            : this.state.UnitPrice
-
-        this.setState({ UnitPrice })
-    }
-
-    handleChangeInvoiceDate = async event => {
-        const InvoiceDate = event.target.value
-        this.setState({ InvoiceDate })
-    }
-
-
     handleChangeCustomerID = async event => {
         const CustomerID = event.target.value
         this.setState({ CustomerID })
+    }
+
+    handleChangeName = async event => {
+        const Name = event.target.value
+        this.setState({ Name })
     }
 
     handleChangeCountry = async event => {
@@ -113,58 +83,83 @@ class TransactionsInsert extends Component {
         this.setState({ Country })
     }
 
+    handleChangeDate = async event => {
+        const Date = event.target.value
+        this.setState({ Date })
+    }
+
+    handleChangeTotalItems = async event => {
+        const TotalItems = event.target.validity.valid
+            ? event.target.value
+            : this.state.TotalItems
+
+        this.setState({ TotalItems })
+    }
+
+    handleChangeTotalRevenue = async event => {
+        const TotalRevenue = event.target.validity.valid
+            ? event.target.value
+            : this.state.TotalRevenue
+
+        this.setState({ TotalRevenue })
+    }
+
+    handleChangeProducts = async event => {
+        const Products = event.target.value
+        this.setState({ Products })
+    }
+
     handleIncludeTransaction = async () => {
         const { 
         	InvoiceNo, 
-        	StockCode, 
-        	Description, 
-        	Quantity, 
-        	InvoiceDate, 
-        	UnitPrice, 
         	CustomerID, 
-        	Country
+        	Name, 
+        	Country, 
+        	Date, 
+        	TotalItems, 
+        	TotalRevenue, 
+        	Products
         } = this.state
         //const arrayTime = time.split('/')
         const payload = { 
         	InvoiceNo, 
-        	StockCode, 
-        	Description, 
-        	Quantity, 
-        	InvoiceDate, 
-        	UnitPrice, 
         	CustomerID, 
-        	Country 
+            Name, 
+            Country,
+        	Date, 
+        	TotalItems, 
+        	TotalRevenue, 
+        	Products
         }
 
         await api.insertTransaction(payload).then(res => {
             window.alert(`Transaction inserted successfully`)
             this.setState({
 	            InvoiceNo: null,
-			    StockCode: "",
-			    Description: "",
-			    Quantity: null ,
-			    InvoiceDate: "",
-			    UnitPrice: null ,
-			    CustomerID: null ,
-			    Country: ""
+			    CustomerID: "",
+			    Name: "",
+			    Country: null ,
+			    Date: "",
+			    TotalItems: null ,
+			    TotalRevenue: null ,
+			    Products: []
             })
         })
     }
-
     render() {
         const {
         	InvoiceNo, 
-        	StockCode, 
-        	Description, 
-        	Quantity, 
-        	InvoiceDate, 
-        	UnitPrice, 
         	CustomerID, 
-        	Country  
+        	Name, 
+        	Country, 
+        	Date, 
+        	TotalItems, 
+        	TotalRevenue, 
+        	Products  
         } = this.state
 
         return (
-            <Wrapper>
+            <Wrapper style={divStyle}>
                 <Title>Create New Transaction</Title>
 
                 <Label>InvoiceNo: </Label>
@@ -174,49 +169,7 @@ class TransactionsInsert extends Component {
                     value={InvoiceNo}
                     onChange={this.handleChangeInvoiceNo}
                 />
-                <Label>StockCode: </Label>
-                <InputText
-                    type="number"
-                    pattern="[0-9]+([,\.][0-9]+)?"
-                    value={StockCode}
-                    onChange={this.handleChangeStockCode}
-                />
-
-                <Label>Description: </Label>
-                <InputText
-                    type="text"
-                    lang="en-US"
-                    value={Description}
-                    onChange={this.handleChangeDescription}
-                />
-
-                <Label>Quantity: </Label>
-                <InputText
-                    type="number"
-                    pattern="[0-9]+([,\.][0-9]+)?"
-                    step="1"
-                    lang="en-US"
-                    min="0"
-                    max="10"
-                    value={Quantity}
-                    onChange={this.handleChangeQuantity}
-                />
-
-                <Label>InvoiceDate: </Label>
-                <InputText
-                    type="text"
-                    value={InvoiceDate}
-                    onChange={this.handleChangeInvoiceDate}
-                />
-
-                <Label>UnitPrice: </Label>
-                <InputText
-                    type="number"
-                    value={UnitPrice}
-                    onChange={this.handleChangeUnitPrice}
-                />
-
-                 <Label>CustomerID: </Label>
+                <Label>CustomerID: </Label>
                 <InputText
                     type="text"
                     step="0.1"
@@ -227,6 +180,14 @@ class TransactionsInsert extends Component {
                     onChange={this.handleChangeCustomerID}
                 />
 
+                <Label>Name: </Label>
+                <InputText
+                    type="text"
+                    lang="en-US"
+                    value={Name}
+                    onChange={this.handleChangeName}
+                />
+
                 <Label>Country: </Label>
                 <InputText
                     type="text"
@@ -234,8 +195,41 @@ class TransactionsInsert extends Component {
                     onChange={this.handleChangeCountry}
                 />
 
+                <Label>Date: </Label>
+                <InputText
+                    type="text"
+                    value={Date}
+                    onChange={this.handleChangeDate}
+                />
+
+                <Label>Total Items: </Label>
+                <InputText
+                    type="number"
+                    pattern="[0-9]+([,\.][0-9]+)?"
+                    step="1"
+                    lang="en-US"
+                    min="0"
+                    max="10"
+                    value={TotalItems}
+                    onChange={this.handleChangeTotalItems}
+                />
+
+                <Label>Total Revenue: </Label>
+                <InputText
+                    type="number"
+                    value={TotalRevenue}
+                    onChange={this.handleChangeTotalRevenue}
+                />
+
+                <Label>Products: </Label>
+                <InputText
+                    type="array"
+                    value={Products}
+                    onChange={this.handleChangeProducts}
+                />         
+
                 <Button onClick={this.handleIncludeTransaction}>Add Transaction</Button>
-                <CancelButton href={'/transactions/list'}>Cancel</CancelButton>
+                <CancelButton href={'/orders/list'}>Cancel</CancelButton>
             </Wrapper>
         )
     }

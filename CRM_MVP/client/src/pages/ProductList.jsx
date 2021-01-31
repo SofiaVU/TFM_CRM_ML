@@ -22,6 +22,12 @@ const Delete = styled.div`
     cursor: pointer;
 `
 
+const divStyle = {
+    marginLeft: '5%',
+    marginTop: '2%',
+    width: '90%',
+};
+
 /*******************************
          CLASS LIST 
 ********************************/
@@ -90,7 +96,7 @@ class ProductList extends Component {
         }
 
         return (
-            <Wrapper>
+            <Wrapper style={divStyle}>
                <h2>Products ({groupedProducts.length})</h2><br/>
                 {showTable && (
                     <ReactTable

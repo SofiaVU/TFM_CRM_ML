@@ -3,6 +3,8 @@ CRM_MVP/services/old_model
 CRM_MVP/services/request.py
 CRM_MVP/services/StepsFollowed.txt
 CRM_MVP/services/venv
+CRM_MVP/client/src/components/Graphs/InfoBoxes_OLD.jsx
+CRM_MVP/services/__pycache__/
 
 Data
 

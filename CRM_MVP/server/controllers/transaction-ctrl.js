@@ -37,7 +37,7 @@ function niceMonth(date){
 /*********************************************/
 
 /**************************************************************************************************************************************************************************/
-/***********************************************                     NEED TO CHECK FUNTIONS                      **********************************************************/
+/***********************************************                     CRUD FUNTIONS                      **********************************************************/
 /**************************************************************************************************************************************************************************/
 
 createTransaction = (req, res) => {
@@ -119,7 +119,7 @@ updateTransaction = async (req, res) => {
 }
 
 deleteTransaction = async (req, res) => {
-    await Transaction.findOneAndDelete({ _id: req.params.id }, (err, transaction) => {
+    await Transaction.findOneAndDelete({ InvoiceNo: req.params.id }, (err, transaction) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
@@ -149,6 +149,21 @@ getTransactionById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+getTransactionByInvoiceNo = async (req, res) => {
+    await Transaction.findOne({ InvoiceNo: req.params.id }, (err, transaction) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+
+        if (!transaction) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transaction not found` })
+        }
+        return res.status(200).json({ success: true, data: transaction })
+    }).catch(err => console.log(err))
+}
+
 getTransactions = async (req, res) => {
     await Transaction.find({}, (err, transactions) => {
         if (err) {
@@ -163,7 +178,7 @@ getTransactions = async (req, res) => {
     }).catch(err => console.log(err))
 }
 /**************************************************************************************************************************************************************************/
-/***********************************************                         END CHECK FUNTIONS                      **********************************************************/
+/***********************************************                         END CRUD FUNTIONS                      **********************************************************/
 /**************************************************************************************************************************************************************************/
 
 /**********************    ORDERS/ TRANSCTIONS    **************************/
@@ -369,8 +384,6 @@ getMonthlyData= async (req, res) => {
            Month: (transaction.Date.getMonth()+ 1), // //months from 1-12 --> getMonth returns Janary = 0
            Day: (transaction.Date.getUTCDate()), 
            YearMonth: Number(String(transaction.Date.getUTCFullYear()) + niceMonth(transaction.Date)),
-           //Hour: (transaction.Date.getUTCHours()), 
-           //Minute: (transaction.Date.getUTCMinutes()), 
            Revenue: transaction.TotalRevenue,
            Items: transaction.TotalItems
         })).value()
@@ -424,6 +437,23 @@ getProductOverAlls= async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+/**********************   TRANSACTIONS BY CUSTOMER ID   **************************/
+
+/*getTransactionById = async (req, res) => {
+    await Transaction.findOne({ CustomerID: req.params.id }, (err, transaction) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+
+        if (!transaction) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transaction not found` })
+        }
+        return res.status(200).json({ success: true, data: transaction })
+    }).catch(err => console.log(err))
+}*/
+
 
 
 module.exports = {
@@ -432,6 +462,7 @@ module.exports = {
     deleteTransaction,
     getTransactions,
     getTransactionById,
+    getTransactionByInvoiceNo,
     getCustomers,
     getOrders,
     getProducts,
