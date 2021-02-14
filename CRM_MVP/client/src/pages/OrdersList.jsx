@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactTable from 'react-table-6'
 import api from '../api'
 import edit from './../assets/icons/edit3.png'; 
+import deleteIcon from './../assets/icons/delete.png'; 
 import { Button, Image} from "react-bootstrap";
 
 import styled from 'styled-components'
@@ -26,43 +27,68 @@ const divStyle = {
     marginTop: '2%',
     width: '90%',
 };
+
+const linkCss = {
+    textDecoration: 'underline',
+    textdecorationColor: 'blue',
+}
 /*******************************
          CLASS DELETE 
 ********************************/
-class DeleteMovie extends Component {
-    deleteUser = event => {
+class DeleteTransaction extends Component {
+    deleteTx = event => {
         event.preventDefault()
 
         if (
             window.confirm(
-                `Do tou want to delete the movie ${this.props.id} permanently?`,
+                `Do tou want to delete the transaction ${this.props.InvoiceNo} permanently?`,
             )
         ) {
-            api.deleteMovieById(this.props.id)
+            api.deleteTransaction(this.props.InvoiceNo)
             window.location.reload()
         }
     }
 
     render() {
-        return <Delete onClick={this.deleteUser}>Delete</Delete>
+        //return <Delete onClick={this.deleteTx}>Delete</Delete>
+        return <Button variant="link" onClick={this.deleteTx}>
+                    <Image alt={'delete'} src={deleteIcon} height="40" width="40"></Image>
+                </Button>
     }
 }
+
 /*******************************
          CLASS UPDATE 
 ********************************/
 class UpdateTransaction extends Component {
-    updateUser = event => {
+    updateTx = event => {
         event.preventDefault()
         window.location.href = `/transactions/update/${this.props.InvoiceNo}`
     }
 
     render() {
-        return <Button variant="link" onClick={this.updateUser}>
+        return <Button variant="link" onClick={this.updateTx}>
                     <Image alt={'edit'} src={edit} height="40" width="40"></Image>
                 </Button>
-        //<Update onClick={this.updateUser}>Update</Update>
+        //<Update onClick={this.updateTx}>Update</Update>
     }
 }
+
+/*************************************
+         CLASS CustomerId Details 
+*************************************/
+class CustomerIdDetails extends Component {
+    customerDetailsTx = event => {
+        event.preventDefault()
+        window.location.href = `/transactions/customerID/${this.props.CustomerID}`
+    }
+
+    render() {
+        return <a onClick={this.customerDetailsTx} style={linkCss}>{this.props.CustomerID}</a>
+        //<Update onClick={this.updateTx}>Update</Update>
+    }
+}
+
 
 /*******************************
          CLASS LIST 
@@ -110,6 +136,13 @@ class OrdersList extends Component {
                 Header: 'Customer ID',
                 accessor: 'CustomerID',
                 filterable: true,
+                Cell: function(props) {
+                    return (
+                        <span>
+                            <CustomerIdDetails CustomerID={props.original.CustomerID} />
+                        </span>
+                    )
+                },
             },
             {
                 Header: 'Country',
@@ -145,6 +178,17 @@ class OrdersList extends Component {
                     )
                 },
             },
+            {
+                Header: 'Delete',
+                accessor: '',
+                Cell: function(props) {
+                    return (
+                        <span>
+                            <DeleteTransaction InvoiceNo={props.original.InvoiceNo} />
+                        </span>
+                    )
+                },
+            },
         ]
 
         let showTable = true
@@ -160,7 +204,7 @@ class OrdersList extends Component {
                         data={orders}
                         columns={columns}
                         loading={isLoading}
-                        defaultPageSize={15}
+                        defaultPageSize={10}
                         showPageSizeOptions={true}
                         minRows={0}
                         style={{textAlign: "center" }}

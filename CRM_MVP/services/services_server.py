@@ -36,8 +36,17 @@ def predict_xgb():
 
     # Take the first value of prediction
 	output_xgb = prediction_xgb[0]
+	output = ""
+	
+	if output_xgb == 1:
+		output = "High Value Customer"
+	elif output_xgb == 2:
+		output = "Mid Value Customer"
+	elif output_xgb == 1:
+		output = "Low Value Customer"
 
-	return  str(output_xgb) 
+	#return  str(output_xgb) 
+	return output
 
 ####################################################################
 ###  PREDIUCT REVENUE REVENUE NEXT 6 MONTHS (Linear Regression)   ##

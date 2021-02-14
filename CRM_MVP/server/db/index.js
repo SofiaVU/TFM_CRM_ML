@@ -1,9 +1,7 @@
 const mongoose = require('mongoose')
 
 mongoose
-    //.connect('mongodb://127.0.0.1:27017/CRM_7nov', { useNewUrlParser: true }) 
     .connect('mongodb://127.0.0.1:27017/BBDD_OnlineRetail', { useNewUrlParser: true }) // --> resultado de aplicar funcion js mydataset
-    //.connect('mongodb://127.0.0.1:27017/Initial_DataSet_withNames', { useNewUrlParser: true })
     .catch(e => {
         console.error('Connection error', e.message)
     })

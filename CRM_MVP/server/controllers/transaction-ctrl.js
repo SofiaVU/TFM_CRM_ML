@@ -1,7 +1,8 @@
 const Transaction = require('../models/transaction-model')
 var _ = require('underscore-node')
 var _2 = require('lodash');
-const { sumBy } = require('lodash');
+const { sumBy, countBy, orderBy } = require('lodash');
+const { max } = require('underscore-node');
 
 
 /********** AUX FUNCTIONS *******************/
@@ -439,8 +440,8 @@ getProductOverAlls= async (req, res) => {
 
 /**********************   TRANSACTIONS BY CUSTOMER ID   **************************/
 
-/*getTransactionById = async (req, res) => {
-    await Transaction.findOne({ CustomerID: req.params.id }, (err, transaction) => {
+getTransactionByCustomerId = async (req, res) => {
+    await Transaction.find({ CustomerID: req.params.id }, (err, transaction) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
@@ -452,8 +453,42 @@ getProductOverAlls= async (req, res) => {
         }
         return res.status(200).json({ success: true, data: transaction })
     }).catch(err => console.log(err))
-}*/
+}
+/**********************  GET LTV FEATURES   **************************/
+getLTVfeatures= async (req, res) => {
+    await Transaction.find({CustomerID: req.params.id}, (err, transactions) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!transactions.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Transactions not found` })
+        }
 
+       const clean_transactions = clean_data(transactions)
+        // Transactions ordered by Date descending
+       const orderedTx = orderBy(clean_transactions,['Date'], ['desc']) ;
+       
+       const aux = _2(orderedTx)
+       .groupBy('CustomerID').map((transaction, id) => ({
+          Recency: Number(Object.keys(_2.groupBy(transaction, function(transaction) { 
+                const date2 = new Date('12/09/2011');
+                const date1 = transaction.Date;
+                const diffTime = Math.abs(date2 - date1);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                //return transaction.Date; 
+                return diffDays
+            }))[0]),
+          Frequency: Object.values(countBy(transaction, "CustomerID"))[0],
+          Revenue: sumBy(transaction, "TotalRevenue")
+        }))
+      ;
+        
+
+        return res.status(200).json({ success: true, data: aux })
+    }).catch(err => console.log(err))
+}
 
 
 module.exports = {
@@ -463,11 +498,13 @@ module.exports = {
     getTransactions,
     getTransactionById,
     getTransactionByInvoiceNo,
+    getTransactionByCustomerId,
     getCustomers,
     getOrders,
     getProducts,
     getInfoBoxes,
     getMonthlyData,
     getProductOverAlls,
+    getLTVfeatures,
     getMyDataset
 }

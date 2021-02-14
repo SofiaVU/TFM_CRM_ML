@@ -110,46 +110,6 @@ class TransactionsUpdate extends Component {
         const Products = event.target.value
         this.setState({ Products })
     }
-
-    /*
-    handleIncludeTransaction = async () => {
-        const { 
-        	InvoiceNo, 
-        	StockCode, 
-        	Description, 
-        	Quantity, 
-        	InvoiceDate, 
-        	UnitPrice, 
-        	CustomerID, 
-        	Country
-        } = this.state
-        //const arrayTime = time.split('/')
-        const payload = { 
-        	InvoiceNo, 
-        	StockCode, 
-        	Description, 
-        	Quantity, 
-        	InvoiceDate, 
-        	UnitPrice, 
-        	CustomerID, 
-        	Country 
-        }
-
-        await api.insertTransaction(payload).then(res => {
-            window.alert(`Transaction inserted successfully`)
-            this.setState({
-	            InvoiceNo: null,
-			    StockCode: "",
-			    Description: "",
-			    Quantity: null ,
-			    InvoiceDate: "",
-			    UnitPrice: null ,
-			    CustomerID: null ,
-			    Country: ""
-            })
-        })
-    }
-    */
     handleUpdateTransaction = async () => {
         const { 
             InvoiceNo,
@@ -187,6 +147,7 @@ class TransactionsUpdate extends Component {
 
     componentDidMount = async () => {
         const { id } = this.state
+        console.log(id)
         const transaction = await api.getTransactionByInvoiceNo(id)
 
         this.setState({

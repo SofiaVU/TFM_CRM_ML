@@ -10,38 +10,53 @@ const divStyle = {
     width: '90%',
 };
 
-
 export default class CustomerDetails extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
+            id: this.props.match.params.id,
             transactions: [], 
-            isLoading: true
+            isLoading: true,
           };
     }
-
-    /*async componentWillMount() {
-        axios.get('http://localhost:3000/api/transactions').then((res) => {
-        this.setState({transactions: res.data});
-        console.log("ComponentDidMount API call at transactionList");
-        //console.log(this.state.transactions);
-        }).catch ((err) => {
-        console.log(err);
-        });
-        
-    }*/
     componentDidMount = async () => {
-        this.setState({ isLoading: true })
+        const { id } = this.state
+        console.log(id)
+        
+        const transactions = await api.getTransactionByCustomerId(id)
+        console.log("Transaction By Customer ID")
+        console.log(transactions.data)
 
-        await api.getAllOrders().then(orders => {
-            this.setState({
-                transactions: orders.data.data,
-                isLoading: false,
-            })
+        const LTVfeatures = await api.getLTVfeatures(id)
+        console.log("LTV Features")
+        console.log(LTVfeatures.data.data[0])
+
+        this.setState({
+            transactions: transactions.data.data,
+            User: transactions.data.data[0],
+            LTVfeatures: LTVfeatures.data.data[0],
+            isLoading: false,
         })
     }
-    
+
+    handlePredictLTV = async () => {
+        const payload = { 
+        	Recency: 95, 
+            Frequency: 5,
+            Revenue: 948.25
+        }
+        const customerValue =  await api.getLTV(this.state.LTVfeatures).then(res => {
+            //window.alert(`LTV Prediction`)
+            return res.data
+        }) 
+        this.setState({
+            LTV_value: customerValue,
+        }) 
+        //console.log("LTV VALUE")  
+        //console.log(customerValue)
+    }
+
     render(){
         if(this.state.isLoading == true) {
             return(
@@ -61,11 +76,10 @@ export default class CustomerDetails extends React.Component {
                 </Button>
               </div>
             ); 
-          } 
-
+          }         
         let transactionsList = [];
-        console.log("TRAZA 2")
-        console.log(this.state.transactions)
+        //console.log("TRAZA 2")
+        //console.log(this.state.transactions)
         transactionsList = (this.state.transactions).map((transaction, index) => {
         return (
             <TransactionItem key={index}
@@ -82,21 +96,21 @@ export default class CustomerDetails extends React.Component {
                 <Col md={2} />
                     <Col xs={12} md={8}>
                         <Row className="show-grid">
-                            <Col xs={12} md={6}>
+                            <Col xs={12} md={7}>
                                 <ul className="list-group">
                                     <li className="list-group-item">
-                                        <h1><strong>Customer Name: Pepe</strong></h1> 
-                                        <h3><strong>Customer ID:</strong> 00000 </h3>            
-                                        <h3><strong>Country:</strong> Spain </h3>
-                                        <h3><strong>Last purchase date:</strong> 2021-01-01 </h3>
+                                        <h2><strong>Customer Name:</strong><a style={{color: 'red'}}> {this.state.User.Name}</a></h2> 
+                                        <h3><strong>Customer ID:</strong> {this.state.User.CustomerID} </h3>            
+                                        <h3><strong>Country:</strong> {this.state.User.Country} </h3>
                                     </li>
                                 </ul>
                             </Col>
-                            <Col xs={12} md={6}>
+                            <Col xs={12} md={5}>
                                 <ul className="list-group">
                                     <li className="list-group-item">
-                                        <h1><strong>PREDICTED CLIENT's LIFETIME VALUE</strong></h1>
-                                        <h3>HIGH VALUE CLIENT</h3>
+                                        <h1><strong>PREDICTED LTV</strong></h1> 
+                                        <Button variant="success" onClick={this.handlePredictLTV}>Predict</Button>
+                                        <h3>{this.state.LTV_value}</h3>
                                     </li>
                                 </ul>
                             </Col>
@@ -104,16 +118,14 @@ export default class CustomerDetails extends React.Component {
                         <Row>
                             
                             <Jumbotron style={{backgroundColor:'#fff', width:'90%', marginLeft: 'auto', marginRight: 'auto', marginTop: '20px'}}>
-                            <h2>Clients Transactions</h2>
+                            <h2>Costumer's Transactions</h2>
                                 <Table responsive style={{textAlign: 'center'}}>
                                     <thead>
                                     <tr>
-                                    <th>InvoiceNo</th>
-                                    <th>Customer Name</th>
-                                    <th>CustomerID</th>
-                                    <th>Date</th>
-                                    <th>Edit</th>
-                                    <th></th>
+                                    <th style={{textAlign: 'center'}}>InvoiceNo</th>
+                                    <th style={{textAlign: 'center'}}>Date</th>
+                                    <th style={{textAlign: 'center'}}>TotalItems</th>
+                                    <th style={{textAlign: 'center'}}>TotalRevenue</th>
                                     </tr>
                                     </thead>
                                     <tbody>

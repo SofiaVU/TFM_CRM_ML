@@ -29,10 +29,10 @@ function App() {
                 <Route path="/product/list" exact component={ProductList} />
                 <Route path="/transactions/create" exact component={TransactionsInsert} />
                 <Route path="/transactions/update/:id" exact component={TransactionsUpdate} />
-                <Route path="/transactions/customerDetails" exact component={CustomerDetails} />
+                <Route path="/transactions/customerID/:id" exact component={CustomerDetails} />
             </Switch>           
         </Router>
     )
 }
 export default App;
-
+// <Route path="/transactions/customerDetails/:id" exact component={CustomerDetails} />customerID
