@@ -83,7 +83,7 @@ const Graph_3 = props => {
     }
   };
 
-  const data = [
+  /*const data = [
     { date: '2000-01', uv: 4000, pv: 2400, amt: 2400, },
     { date: '2000-02', uv: 3000, pv: 1398, amt: 2210, },
     { date: '2000-03', uv: 2000, pv: 9800, amt: 2290, },
@@ -96,7 +96,7 @@ const Graph_3 = props => {
     { date: '2000-10', uv: 2000, pv: 9800, amt: 2290, },
     { date: '2000-11', uv: 2780, pv: 3908, amt: 2000, },
     { date: '2000-12', uv: 1890, pv: 4800, amt: 2181, },
-  ];
+  ];*/
 //<Paper style={styles.paper}>
   return (
     <div>

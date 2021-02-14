@@ -49,18 +49,18 @@ const Graph_4 = props => {
   };
 
   const data = [
-    {name: "Page A", uv: 590, pv: 800, amt: 1400},
-    {name: "Page B", uv: 868, pv: 967, amt: 1506},
-    {name: "Page C", uv: 1397, pv: 1098, amt: 989},
-    {name: "Page D", uv: 1480, pv: 1200, amt: 1228},
-    {name: "Page E", uv: 1520, pv: 1108, amt: 1100},
-    {name: "Page F", uv: 1400, pv: 680, amt: 1700}
+    {name: "DOGGY RUBBER", Value: 590, Sold: 800, Stock: 1400},
+    {name: "FAN BLACK FRAME", Value: 868, Sold: 967, Stock: 1506},
+    {name: "ANIMAL STICKERS", Value: 1397, Sold: 1098, Stock: 989},
+    {name: "SANDALWOOD FAN", Value: 1480, Sold: 1200, Stock: 1228},
+    {name: "DAISY JOURNAL", Value: 1520, Sold: 1108, Stock: 1100},
+    {name: "FROG CANDLE", Value: 1400, Sold: 680, Stock: 1700}
   ];
 
   //<Paper style={styles.paper}>
   return (
     <div>
-      <span style={styles_2.title}>Website Analysis</span>
+      <span style={styles_2.title}>Product Analysis</span>
       <div style={styles_2.clear} />
       <div className="row">
         <div className="col-xs-12">
@@ -77,9 +77,9 @@ const Graph_4 = props => {
               <Tooltip />
               <Legend />
               <CartesianGrid stroke="#f5f5f5" />
-              <Area dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-              <Bar dataKey="pv" barSize={20} fill="#413ea0" />
-              <Line dataKey="uv" stroke="#ff7300" />
+              <Area dataKey="Stock" fill="#8884d8" stroke="#8884d8" />
+              <Bar dataKey="Sold" barSize={20} fill="#413ea0" />
+              <Line dataKey="Value" stroke="#ff7300" />
             </ComposedChart>
           </div>
         </div>

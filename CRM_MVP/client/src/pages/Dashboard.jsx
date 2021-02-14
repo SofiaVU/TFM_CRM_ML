@@ -7,6 +7,7 @@ import Graph_2 from "../components/Graphs/Graph_2";
 import Graph_3 from "../components/Graphs/Graph_3";
 import Graph_4 from "../components/Graphs/Graph_4";
 import LinearChart from "../components/Graphs/LinearChart";
+import MyPieChart from "../components/Graphs/PieChart";
 
 import { Container, Row, Col, Spinner, Button} from "react-bootstrap";
 
@@ -84,11 +85,11 @@ class Dashboard extends React.Component {
         </Row><br />
         <Row>
           <Col><Graph_3 data={this.state.monthlyData}/></Col>
-          <Col><Graph_4/></Col>
+          <Col><MyPieChart data={this.state.monthlyData}/></Col>
         </Row><br />
         <Row>
           <Col><LinearChart data={this.state.monthlyData}/></Col>
-          <Col><LinearChart data={this.state.monthlyData}/></Col>
+          <Col><Graph_4/></Col>
         </Row>
       </Container>
     );
