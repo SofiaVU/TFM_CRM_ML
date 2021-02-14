@@ -132,7 +132,21 @@ class SideBar extends Component {
 	                  </NavText>
 	                </NavItem>
 
-					<NavItem eventKey="transactions/customerDetails">
+					
+
+	              </SideNav.Nav>
+	            </SideNav>
+            </Container>
+        )
+    }
+
+}
+
+export default SideBar
+
+/*
+
+<NavItem eventKey="transactions/customerDetails">
 	                  <NavIcon>
 	                    <IconContext.Provider value={{size:"2em"}}>
 	                     	<Link to="/transactions/customerDetails">
@@ -147,12 +161,4 @@ class SideBar extends Component {
 	                  </NavText>
 	                </NavItem>
 
-	              </SideNav.Nav>
-	            </SideNav>
-            </Container>
-        )
-    }
-
-}
-
-export default SideBar
+*/
