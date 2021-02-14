@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://35.214.127.64:3000/api',
 })
 
 const api_services = axios.create({
-    baseURL: 'http://localhost:5000/api_services',
+    baseURL: 'http://35.208.77.128:5000/api_services',
 })
 // :5000/api_services/ltv  
 //:5000/api_services/linReg

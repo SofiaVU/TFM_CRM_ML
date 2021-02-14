@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 mongoose
-    .connect('mongodb://127.0.0.1:27017/BBDD_OnlineRetail', { useNewUrlParser: true }) // --> resultado de aplicar funcion js mydataset
+    .connect('mongodb://10.154.0.2:27017/BBDD_OnlineRetail', { useNewUrlParser: true }) // --> resultado de aplicar funcion js mydataset
     .catch(e => {
         console.error('Connection error', e.message)
     })
