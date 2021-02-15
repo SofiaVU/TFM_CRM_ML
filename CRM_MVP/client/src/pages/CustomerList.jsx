@@ -24,6 +24,24 @@ const divStyle = {
     marginTop: '2%',
     width: '90%',
 };
+const linkCss = {
+    textDecoration: 'underline',
+    textdecorationColor: 'blue',
+}
+/*************************************
+         CLASS CustomerId Details 
+*************************************/
+class CustomerIdDetails extends Component {
+    customerDetailsTx = event => {
+        event.preventDefault()
+        window.location.href = `/transactions/customerID/${this.props.CustomerID}`
+    }
+
+    render() {
+        return <a onClick={this.customerDetailsTx} style={linkCss}>{this.props.CustomerID}</a>
+        //<Update onClick={this.updateTx}>Update</Update>
+    }
+}
 
 /*******************************
          CLASS LIST 
@@ -77,6 +95,13 @@ class CustomerList extends Component {
                 Header: 'Customer ID',
                 accessor: 'CustomerID',
                 filterable: true,
+                Cell: function(props) {
+                    return (
+                        <span>
+                            <CustomerIdDetails CustomerID={props.original.CustomerID} />
+                        </span>
+                    )
+                },
             },
             {
                 Header: 'Country',
