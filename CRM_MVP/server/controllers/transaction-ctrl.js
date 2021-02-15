@@ -119,6 +119,51 @@ updateTransaction = async (req, res) => {
     })
 }
 
+updateTransactionByInvoiceNo = async (req, res) => {
+    const body = req.body
+
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a body to update',
+        })
+    }
+
+    Transaction.findOne({ InvoiceNo: req.params.id }, (err, transaction) => {
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'Transaction not found!',
+            })
+        }
+
+        transaction.InvoiceNo = body.InvoiceNo
+        transaction.CustomerID = body.CustomerID
+        transaction.Name = body.Name
+        transaction.Country  = body.Country
+        transaction.Date = body.Date
+        transaction.TotalRevenue = body.TotalRevenue
+        transaction.TotalItems = body.TotalItems
+        transaction.Products = body.Products       
+
+        transaction
+            .save()
+            .then(() => {
+                return res.status(200).json({
+                    success: true,
+                    id: transaction._id,
+                    message: 'Transaction updated!',
+                })
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    error,
+                    message: 'Transaction not updated!',
+                })
+            })
+    })
+}
+
 deleteTransaction = async (req, res) => {
     await Transaction.findOneAndDelete({ InvoiceNo: req.params.id }, (err, transaction) => {
         if (err) {
@@ -498,6 +543,7 @@ module.exports = {
     getTransactions,
     getTransactionById,
     getTransactionByInvoiceNo,
+    updateTransactionByInvoiceNo,
     getTransactionByCustomerId,
     getCustomers,
     getOrders,

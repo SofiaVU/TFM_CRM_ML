@@ -11,9 +11,10 @@ const api_services = axios.create({
 //:5000/api_services/linReg
 
 // Node Web Server API
-export const insertTransaction = payload            => api.post(`/transaction`, payload)
-export const getAllTransactions = ()                => api.get(`/transactions`)
-export const updateTransactionById = (id, payload)  => api.put(`/transaction/${id}`, payload)
+export const insertTransaction = payload                      => api.post(`/transaction`, payload)
+export const getAllTransactions = ()                          => api.get(`/transactions`)
+export const updateTransactionById = (id, payload)            => api.put(`/transaction/${id}`, payload)
+export const updateTransactionByInvoiceNo = (id, payload)     => api.put(`/transaction/${id}`, payload)
 export const deleteTransaction = id                 => api.delete(`/transaction/${id}`)
 export const getTransactionById = id                => api.get(`/transaction/${id}`)
 export const getTransactionByInvoiceNo = id         => api.get(`/transaction/invoiceNo/${id}`)
@@ -36,6 +37,7 @@ const apis = {
     insertTransaction,
     getAllTransactions,
     updateTransactionById,
+    updateTransactionByInvoiceNo,
     deleteTransaction,
     getTransactionById,
     getTransactionByInvoiceNo,

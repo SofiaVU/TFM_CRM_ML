@@ -135,15 +135,17 @@ class TransactionsInsert extends Component {
         await api.insertTransaction(payload).then(res => {
             window.alert(`Transaction inserted successfully`)
             this.setState({
-	            InvoiceNo: null,
-			    CustomerID: "",
-			    Name: "",
-			    Country: null ,
-			    Date: "",
-			    TotalItems: null ,
-			    TotalRevenue: null ,
-			    Products: []
+                InvoiceNo: '',
+                CustomerID: '',
+                Name: '',
+                Country: '',
+                Date: '',
+                TotalItems: '',
+                TotalRevenue: '',
+                Products: ''
             })
+            //event.preventDefault()
+            window.location.href = `/orders/list`
         })
     }
     render() {

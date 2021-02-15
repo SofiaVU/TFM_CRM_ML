@@ -132,16 +132,24 @@ class TransactionsUpdate extends Component {
             TotalRevenue,
             Products
         }
+        console.log("PAYLOAD")
+        console.log(payload)
 
         await api.updateTransactionByInvoiceNo(this.state.id, payload).then(res => {
             window.alert(`Transaction updated successfully`)
+            console.log(res)
             this.setState({
-                name: '',
-                rating: '',
-                time: '',
+                InvoiceNo: '',
+                CustomerID: '',
+                Name: '',
+                Country: '',
+                Date: '',
+                TotalItems: '',
+                TotalRevenue: '',
+                Products: ''
             })
             //event.preventDefault()
-            window.location.href = `/transactions/list`
+            window.location.href = `/orders/list`
         })
     }
 
