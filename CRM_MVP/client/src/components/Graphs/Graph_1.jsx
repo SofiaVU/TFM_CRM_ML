@@ -44,7 +44,7 @@ const Graph_1 = props => {
               type="monotone"
               dataKey="TotalSoldItems"
               stroke="#8884d8"
-              strokeWidth={2}
+              strokeWidth={3}
             />
           </LineChart>
         </ResponsiveContainer>

@@ -67,8 +67,8 @@ const Graph_4 = props => {
           <div style={styles.pieChartDiv}>
             <ComposedChart
               layout="vertical"
-              width={600}
-              height={320}
+              width={800}
+              height={325}
               data={data}
               margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
             >

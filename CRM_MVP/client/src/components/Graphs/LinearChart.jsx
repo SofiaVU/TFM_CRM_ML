@@ -27,8 +27,8 @@ const LinearChart = props => {
     return (
       <div><span style={styles_2.title}>Sales Seasonality</span>
       <LineChart
-        width={500}
-        height={300}
+        width={800}
+        height={325}
         data={props.data}
         margin={{
           top: 5, right: 30, left: 20, bottom: 5,

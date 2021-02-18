@@ -106,11 +106,11 @@ const Graph_3 = props => {
         <div className="col-xs-12">
           <div style={styles.pieChartDiv}>
             <BarChart
-              width={500}
-              height={300}
+              width={800}
+              height={350}
               data={props.data}
               margin={{
-                top: 5, right: 30, left: 20, bottom: 5,
+                top: 5, right: 15, left: 20, bottom: 5,
               }}
               fluid
             >
